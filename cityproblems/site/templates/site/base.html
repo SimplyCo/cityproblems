@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>
+    {% block title %}Project Name{% endblock title%}
+    {% block subtitle %} - Главная{% endblock subtitle %}
+    </title>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf8">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:700,400,300,100&subset=latin,cyrillic"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open%20Sans:700,400,300&subset=latin,cyrillic"
+        rel="stylesheet" type="text/css">
+
+    <!-- CSS from Libraries -->
+    <link rel="stylesheet" media="screen" type="text/css"
+        href="{% get_static_prefix %}libs/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" media="screen" type="text/css"
+        href="{% get_static_prefix %}libs/glyphicons/css/bootstrap-glyphicons.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" media="screen" type="text/css"
+        href="{% get_static_prefix %}site/css/base.css" />
+    {% block base_styles %}
+    {% endblock base_styles %}
+</head>
+
+<body>
+    {% block body %}
+    {% endblock body %}
+
+    <!-- JS from libs -->
+    <script type="text/javascript" src="{% get_static_prefix %}libs/jquery/js/jquery.js"></script>
+    <script type="text/javascript" src="{% get_static_prefix %}libs/lightbox_me/jquery.lightbox_me.js"></script>
+    <script type="text/javascript" src="{% get_static_prefix %}libs/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Custom JS -->
+    <script type="text/javascript" src="{% get_static_prefix %}site/js/base.js"></script>
+    {% block base_scripts %}
+    {% endblock base_scripts %}
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends "site/base.html" %}
+
+{% load static %}
+
+{% block base_styles %}
+<link rel="stylesheet" media="screen" type="text/css"
+    href="{% get_static_prefix %}site/css/site_page.css" />
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+{% endblock base_styles %}
+
+
+{% block body %}
+
+BODY
+
+{% block site_page %}
+{% endblock site_page %}
+
+{% endblock body %}
+
+
+{% block base_scripts %}
+<script type="text/javascript" src="{% get_static_prefix %}site/js/site_page.js"></script>
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}
+{% endblock base_scripts %}
