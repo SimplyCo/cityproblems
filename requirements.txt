@@ -1,0 +1,4 @@
+Django==1.5.1
+django-annoying
+mysql-python
+django-bootstrap-form
