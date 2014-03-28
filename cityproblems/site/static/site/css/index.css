@@ -1,0 +1,37 @@
+/*
+primary 59A80F
+9ED54C
+C4ED68
+E2FF9E
+F0F2DD
+*/
+
+div#index-block > div {
+    margin-top: 45px;
+    padding-bottom: 35px;
+}
+
+div#index-left {
+    left: 0;
+    bottom: 0;
+    top: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 300px;
+    /* background-color: #F0F2DD; */
+    background-color: #FEFEFE;
+    border-right: 1px solid #E0E0E0;
+}
+
+div#content {
+    right: 0;
+    bottom: 0;
+    top: 0;
+    left: 300px;
+    overflow: hidden;
+    position: absolute;
+}
+
+.paddedContent {
+    height: 100%;
+}

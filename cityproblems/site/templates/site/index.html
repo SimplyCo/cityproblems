@@ -1,14 +1,29 @@
-{% extends "site/site_page.html" %}
+{% extends "site/full_screen_site_page.html" %}
 
 {% load static %}
 
 {% block site_page_styles %}
 <link rel="stylesheet" media="screen" type="text/css"
-    href="{% get_static_prefix %}site/css/index.css" />
+      href="{% get_static_prefix %}site/css/index.css"/>
 {% endblock site_page_styles %}
 
 {% block site_page %}
-INDEX
+
+<div id="index-block">
+
+    <div id="index-left">
+        <div class="paddedContent">This is the left column2</div>
+    </div>
+
+    <div id="content">
+        <div class="paddedContent">
+            <div id="map_canvas" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+
+</div>
+
+
 {% endblock site_page %}
 
 {% block site_page_scripts %}

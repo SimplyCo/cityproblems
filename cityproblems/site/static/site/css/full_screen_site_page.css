@@ -1,0 +1,35 @@
+/*
+primary 59A80F
+9ED54C
+C4ED68
+E2FF9E
+F0F2DD
+*/
+
+div#container {
+    height: 100%;
+    width: 100%;
+    /*height:auto !important;  real browsers */
+     height: 100%; /* IE6: treaded as min-height*/
+    min-height: 100%; /* real browsers */
+    margin: 0 auto;
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+div#header {
+    height: 50px;
+    position: relative;
+}
+
+div#footer {
+    position: absolute;
+    clear: both;
+    width: 100%;
+    height: 35px;
+    bottom: 0; /* stick to bottom */
+    background-color: #A0A0A0;
+    border-top: 1px solid #909090;
+    font-size: 11px;
+}
