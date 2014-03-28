@@ -1,0 +1,57 @@
+{% extends "admin_page.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load bootstrap %}
+
+{% block subtitle %}{{ title }}{% endblock subtitle %}
+
+{% block base_styles %}
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+{% endblock base_styles %}
+
+
+{% block site_page %}
+    <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2">
+        <div style="margin-bottom: 20px;">
+            <a href="{% url 'admin_addAdmin' %}" class="btn btn-primary btn-sm">{% trans 'Add administrator' %}</a>
+        </div>
+        <table class="table table-hover">
+            <tbody>
+                {% for i in adminsList %}
+                    <tr>
+                        <td>
+                            {{ i.username }}
+                        </td>
+                        <td>
+                            <a href="{% url 'admin_changePasswd' i.id %}" class="btn btn-primary btn-sm">{% trans 'Change password' %}</a>
+                            <form enctype="multipart/form-data" action="{% url 'admin_processLock' %}" method="post" style="display: inline;">{% csrf_token %}
+                                <input id="user_id" name="id" type="text" value="{{ i.id }}" style="display: none;">
+                                {% if i.is_active %}
+                                    <input type="submit" value="{% trans 'Lock' %}" class="btn btn-primary btn-sm" style="display: inline;">
+                                {% else %}
+                                    <input type="submit" value="{% trans 'Unlock' %}" class="btn btn-danger btn-sm" style="display: inline;">
+                                {% endif %}
+                            </form>
+                            <form enctype="multipart/form-data" action="{% url 'admin_processAdminRemove' %}" method="post" style="display: inline;">{% csrf_token %}
+                                <input id="user_id" name="id" type="text" value="{{ i.id }}" style="display: none;">
+                                <input type="submit" value="{% trans 'Remove' %}" class="btn btn-danger btn-sm" style="display: inline;">
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th>{% trans 'No administrators' %}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+
+{% block base_scripts %}
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}
+{% endblock base_scripts %}

@@ -1,0 +1,22 @@
+{% extends "site/full_screen_site_page.html" %}
+
+{% load static %}
+{% load bootstrap %}
+{% load i18n %}
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+
+{% block site_page %}
+    <div class="col-md-8 col-md-offset-2">
+    <h3>{% trans "Login" %}</h3>
+    <form method="post" enctype="multipart/form-data" class="form-horizontal" action="{{ request.get_full_path }}">{% csrf_token %}
+        {{ form|bootstrap }}
+        <input type="submit" value="{% trans 'Login' %}" class="btn btn-primary btn-sm">
+        <a href="{% url 'accounts_register' %}">{% trans "Register" %}</a>
+        <a href="{% url 'accounts_send_passwd_reset_link' %}">{% trans "Forgot password" %}</a>
+    </form>
+    </div>
+{% endblock site_page %}
+
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}

@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+celery -A cityproblems.mailsender worker -l info

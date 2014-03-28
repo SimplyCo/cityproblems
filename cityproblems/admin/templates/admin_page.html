@@ -1,0 +1,68 @@
+{% extends "site/base.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block base_styles %}
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+{% endblock base_styles %}
+
+
+{% block body %}
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'admin_main' %}">{% trans "CarTracker Admin" %}</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            {% if currentPage == "admin_adminsList" %}
+                <li class="active"><a href="{% url 'admin_adminsList' %}">{% trans "Administrators" %}</a></li>
+            {% else %}
+                <li><a href="{% url 'admin_adminsList' %}">{% trans "Administrators" %}</a></li>
+            {% endif %}
+            {% if currentPage == "admin_parametersList" %}
+                <li class="active"><a href="{% url 'admin_parametersList' %}">{% trans "Parameters" %}</a></li>
+            {% else %}
+                <li><a href="{% url 'admin_parametersList' %}">{% trans "Parameters" %}</a></li>
+            {% endif %}
+        </ul>        
+        <ul class="nav navbar-nav navbar-right">
+                <li>
+            <a href="{% url 'home' %}" class="navbar-link">
+                {% trans 'Back to site' %}&nbsp;&rarr;
+            </a>
+                </li>
+            {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="{% url "logout" %}?next={{ request.get_full_path }}">{% trans 'Logout' %}</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="col-md-12">
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                <div class="alert alert-danger">
+            {% else %}
+                <div class="alert alert-{{ message.tags }}">
+            {% endif %}
+            {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% block site_page %}
+    {% endblock site_page %}
+</div>
+{% endblock body %}
+
+
+{% block base_scripts %}
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}
+{% endblock base_scripts %}

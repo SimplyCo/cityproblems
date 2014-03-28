@@ -1,0 +1,54 @@
+{% extends "admin_page.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load bootstrap %}
+
+{% block subtitle %}{{ title }}{% endblock subtitle %}
+
+{% block base_styles %}
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+{% endblock base_styles %}
+
+
+{% block site_page %}
+    <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2">
+        <h3>{{ title }}</h3>
+        {% if user.is_superuser %}
+            <div style="margin-bottom: 20px;">
+                <a href="{% url 'admin_addParameter' %}" class="btn btn-primary btn-sm">{% trans 'Add parameter' %}</a>
+            </div>
+        {% endif %}
+        <table class="table table-hover">
+            <tbody>
+                {% for i in paramsList %}
+                    <tr>
+                        <td>
+                            {{ i.key }}
+                        </td>
+                        <td>
+                            <a href="{% url 'admin_editParameter' i.id %}" class="btn btn-primary btn-sm">{% trans 'Edit' %}</a>
+                            {% if user.is_superuser %}
+                                <form enctype="multipart/form-data" action="{% url 'admin_processParameterRemove' %}" method="post" style="display: inline;">{% csrf_token %}
+                                    <input id="user_id" name="id" type="text" value="{{ i.id }}" style="display: none;">
+                                    <input type="submit" value="{% trans 'Delete' %}" class="btn btn-danger btn-sm" style="display: inline;">
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th>{% trans 'No parameters' %}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+
+{% block base_scripts %}
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}
+{% endblock base_scripts %}

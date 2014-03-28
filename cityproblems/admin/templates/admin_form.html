@@ -1,0 +1,30 @@
+{% extends "admin_page.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load bootstrap %}
+
+{% block subtitle %}{{ title }}{% endblock subtitle %}
+
+{% block base_styles %}
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+{% endblock base_styles %}
+
+
+{% block site_page %}
+    <div class="col-md-5 col-sm-8 col-xs-8 col-md-offset-3">
+        <h3>{{ title }}</h3>
+        <form method="post" enctype="multipart/form-data" class="form-horizontal" action="{{ request.get_full_path }}">{% csrf_token %}
+            {{ form|bootstrap }}
+            <input type="submit" value="{{ buttonTxt }}" class="btn btn-primary btn-sm">
+            <a href="javascript:history.back()" class="btn btn-default btn-sm">{% trans "Cancel" %}</a>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block base_scripts %}
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}
+{% endblock base_scripts %}

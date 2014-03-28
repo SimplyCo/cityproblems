@@ -1,0 +1,12 @@
+Ответ на комментарий.<br/>
+<br/>
+Уважаемый {{ usr.first_name }} {{ usr.last_name }}!<br/>
+На ваш комментарий был получен новый ответ:<br/>
+<br/>
+{{ comment.created_by.username }}:<br/>
+{{ comment.content }}<br/>
+Просмотреть все комментарии вы можете по ссылке:<br/>
+<a href="{{ forum_item_url }}">Тема {{ comment.forum_item.subject }}</a><br/>
+<br/>
+Спасибо!<br/>
+<br/>

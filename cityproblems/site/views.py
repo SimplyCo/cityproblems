@@ -8,6 +8,12 @@ from django.core import serializers
 
 from annoying.decorators import render_to
 
+
 @render_to('site/index.html')
 def home(request):
-	return {}
+    return {}
+
+
+@render_to('site/no_permissions.html')
+def no_permissions(request):
+    return {}

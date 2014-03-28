@@ -1,0 +1,25 @@
+{% extends "site/full_screen_site_page.html" %}
+
+{% load static %}
+{% load i18n %}
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+
+{% block site_page %}
+    <div class="col-md-2">
+        {{ usr.get_short_name }}
+        {% if user == usr %}
+            <a href="{% url 'accounts_profile_edit' %}" class="btn btn-primary btn-sm">{% trans "Edit" %}</a>
+            <a href="{% url 'accounts_passwd_change' %}" class="btn btn-primary btn-sm">{% trans "Change password" %}</a>
+        {% endif %}
+        <img src="{{ usr.get_avatar }}" width="100%">
+    </div>
+    <div class="col-md-5">
+        <p>{{ usr.get_full_name }}</p>
+        <p><a href="mailto:{{ usr.email }}">{{ usr.email }}</a></p>
+        <p>{{ usr.about_me }}</p>
+    </div>
+{% endblock site_page %}
+
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}

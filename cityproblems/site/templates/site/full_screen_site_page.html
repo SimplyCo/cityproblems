@@ -1,6 +1,7 @@
 {% extends "site/base.html" %}
 
 {% load static %}
+{% load i18n %}
 
 {% block base_styles %}
 <link rel="stylesheet" media="screen" type="text/css"
@@ -29,7 +30,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="{% url 'home' %}">
                         CityProblems
                     </a>
                 </div>
@@ -55,19 +56,22 @@
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" class="login-button">Login</a></li>
-                        <li><a href="#">Register</a></li>
+                        {% if not user.is_authenticated %}
+                            <li><a href="{% url 'login' %}" class="login-button">{% trans "Login" %}</a></li>
+                            <li><a href="{% url 'accounts_register' %}">{% trans "Register" %}</a></li>
+                        {% else %}
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Username <b
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }} <b
                                     class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
+                                <li><a href="{% url 'accounts_profile_view' %}">{% trans "My profile" %}</a></li>
                                 <li><a href="#">Another action</a></li>
                                 <li><a href="#">Something else here</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a href="{% url 'logout' %}">{% trans "Logout" %}</a></li>
                             </ul>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -76,10 +80,11 @@
         </nav>
 
     </div>
-
-    {% block site_page %}
-    {% endblock site_page %}
-
+    
+    <div class="container">
+        {% block site_page %}
+        {% endblock site_page %}
+    </div>
     <div id="footer">
         Footer
     </div>
