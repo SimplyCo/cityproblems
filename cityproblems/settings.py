@@ -1,4 +1,5 @@
 import os
+from django.core.urlresolvers import reverse_lazy
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 try:
@@ -81,6 +82,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'static/'
 MEDIA_ROOT = u'{}'.format(BASE_DIR)
 MEDIA_URL = '/media/'
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = reverse_lazy("site_user_cabinet")
 # celery
 BROKER_URL = 'redis://localhost:6379/0'
