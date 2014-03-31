@@ -1,0 +1,38 @@
+.admin-side-menu {
+    background-color: #505050;
+    color: #FFFFE0;
+    font-size: 14px;
+}
+
+.side-menu {}
+
+.side-menu .menu-section {margin: 10px 10px 20px 10px;}
+
+.side-menu .menu-section h4 {font-size: 13px; font-weight: bold; border-bottom: 1px solid #FFFFE0;}
+
+.side-menu .menu-section ul {padding: 0; margin: 0; list-style: none;}
+.side-menu .menu-section ul li {margin-top: 2px;}
+.side-menu .menu-section ul li a {
+    font-size: 13px;
+    display: block;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+.side-menu .menu-section ul li:hover a {
+    background-color: #59A80F;
+    color: white;
+    text-decoration: none;
+}
+.side-menu .menu-section ul li.active {}
+.side-menu .menu-section ul li.active a {
+    background-color: #40790B;
+    color: #FFFFE0;
+    text-decoration: none;
+}
+.side-menu .menu-section ul li.active:hover a {
+    text-decoration: none;
+}
+
+.side-menu a {}
+.side-menu a:hover {color: #FFFFE0;}
+

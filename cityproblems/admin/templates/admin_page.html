@@ -1,18 +1,20 @@
-{% extends "site/base.html" %}
+{% extends "admin_base.html" %}
 
 {% load static %}
 {% load i18n %}
 
 {% block base_styles %}
-{% block site_page_styles %}
-{% endblock site_page_styles %}
+    <link rel="stylesheet" media="screen" type="text/css"
+        href="{% get_static_prefix %}admin/css/admin_page.css" />
+    {% block site_page_styles %}
+    {% endblock site_page_styles %}
 {% endblock base_styles %}
 
 
 {% block body %}
 <nav class="navbar navbar-default navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <a class="navbar-brand" href="{% url 'admin_main' %}">{% trans "CarTracker Admin" %}</a>
+        <a class="navbar-brand" href="{% url 'admin_main' %}">{% trans "CityProblems Admin" %}</a>
     </div>
     <div>
         <ul class="nav navbar-nav">
@@ -44,25 +46,60 @@
         </ul>
     </div>
 </nav>
-<div class="container">
-    <div class="col-md-12">
-        {% for message in messages %}
-            {% if message.tags == "error" %}
-                <div class="alert alert-danger">
-            {% else %}
-                <div class="alert alert-{{ message.tags }}">
-            {% endif %}
-            {{ message }}
+<div class="admin-container">
+    <div class="row">
+
+        <div class="col-md-2 admin-side-menu">
+            <div class="side-menu">
+                <div class="menu-section">
+                    <h4>PROBLEMS</h4>
+                    <ul>
+                        <li class="active"><a href="">All</a></li>
+                        <li><a href="">Open</a></li>
+                        <li><a href="">Closed</a></li>
+                        <li><a href="">Rejected</a></li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h4>USERS</h4>
+                    <ul>
+                        <li><a href="">All</a></li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h4>SETTINGS</h4>
+                    <ul>
+                        <li><a href="">Administrators</a></li>
+                        <li><a href="">Parameters</a></li>
+                    </ul>
+                </div>
             </div>
-        {% endfor %}
+        </div>
+
+        <div class="col-md-10">
+            <div class="admin-container-message">
+            {% for message in messages %}
+                {% if message.tags == "error" %}
+                    <div class="alert alert-danger">
+                {% else %}
+                    <div class="alert alert-{{ message.tags }}">
+                {% endif %}
+                {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+
+            <div class="admin-container-main">
+                {% block site_page %}
+                {% endblock site_page %}
+            </div>
+        </div>
     </div>
-    {% block site_page %}
-    {% endblock site_page %}
 </div>
 {% endblock body %}
 
 
 {% block base_scripts %}
-{% block site_page_scripts %}
-{% endblock site_page_scripts %}
+    {% block site_page_scripts %}
+    {% endblock site_page_scripts %}
 {% endblock base_scripts %}
