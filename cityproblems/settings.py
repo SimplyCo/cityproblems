@@ -57,6 +57,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
+    'cityproblems.site.context_processors.get_settings',
     )
 
 ROOT_URLCONF = 'cityproblems.urls'
