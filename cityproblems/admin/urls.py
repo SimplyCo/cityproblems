@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 
+from .views import UsersList
+
 urlpatterns = patterns('cityproblems.admin.views',
                        url(r'^addAdmin/$', 'add_admin', name='admin_addAdmin'),
                        url(r'^addParameter/$', 'add_parameter', name='admin_addParameter'),
@@ -13,3 +15,7 @@ urlpatterns = patterns('cityproblems.admin.views',
                        url(r'^changePasswd/(\d+)/$', 'change_passwd', name='admin_changePasswd'),
                        )
 
+urlpatterns += patterns('',
+                        url(r'^users/$', UsersList.as_view(), name='admin_UsersList'),
+                        url(r'^users/(?P<page>\d+)/$', UsersList.as_view(), name='admin_UsersList'),
+                        )

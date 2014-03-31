@@ -1,0 +1,54 @@
+{% extends "admin_page.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block subtitle %}{{ title }}{% endblock subtitle %}
+
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+
+
+{% block site_page %}
+    <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2"  ng-app="myApp">
+        <table class="table table-hover">
+            <tbody>
+                {% for i in users %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'accounts_profile_view' i.username %}">{{ i.username }}</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'admin_changePasswd' i.id %}" class="btn btn-primary btn-sm">{% trans 'Change password' %}</a>
+                            <form enctype="multipart/form-data" action="{% url 'admin_processLock' %}?next={{ request.get_full_path }}" method="post" style="display: inline;">{% csrf_token %}
+                                <input id="user_id" name="id" type="text" value="{{ i.id }}" style="display: none;">
+                                {% if i.is_active %}
+                                    <input type="submit" value="{% trans 'Lock' %}" class="btn btn-primary btn-sm" style="display: inline;">
+                                {% else %}
+                                    <input type="submit" value="{% trans 'Unlock' %}" class="btn btn-danger btn-sm" style="display: inline;">
+                                {% endif %}
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th>{% trans 'No users' %}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if paginator.num_pages > 1 %}
+            <div ng-controller="PaginationCtrl">
+                <pagination rotate="false" total-items="{{ paginator.count }}"  page="{{ page_obj.number }}" items-per-page="{{ settings.ADMIN_USER_OBJECTS_PER_PAGE }}" max-size="maxSize" boundary-links="true" on-select-page="pageChanged(page)" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block site_page_scripts %}
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="{% get_static_prefix %}libs/angular/ui-bootstrap-tpls-0.10.0.min.js"></script>
+    <script src="{% get_static_prefix %}angular/controllers/paginator_ctrl.js"></script>
+    <script src="{% get_static_prefix %}angular/main_bootstrap_ui.js"></script>
+{% endblock site_page_scripts %}

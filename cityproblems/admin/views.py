@@ -13,6 +13,9 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.forms.models import modelform_factory
 from django.contrib.auth import get_user_model
+from django.views.generic.list import ListView
+from django.utils.decorators import method_decorator
+from django.conf import settings
 
 from annoying.decorators import render_to
 
@@ -96,16 +99,16 @@ def process_lock(request):
         user = User.objects.get(id=request.POST.get('id', 0))
     except ObjectDoesNotExist:
         messages.error(request, _("No such user"))
-        return HttpResponseRedirect(reverse("admin_adminsList"))
+        return HttpResponseRedirect(nextPage(request.GET, reverse("admin_adminsList")))
     if user.id == request.user.id:
         messages.error(request, _("You can`t lock yourself"))
-        return HttpResponseRedirect(reverse("admin_adminsList"))
+        return HttpResponseRedirect(nextPage(request.GET, reverse("admin_adminsList")))
     user.is_active = not user.is_active
     user.save()
     if not user.is_active:
         [s.delete() for s in Session.objects.all() if s.get_decoded()
          .get('_auth_user_id') == user.id]
-    return HttpResponseRedirect(reverse("admin_adminsList"))
+    return HttpResponseRedirect(nextPage(request.GET, reverse("admin_adminsList")))
 
 
 @login_required
@@ -156,3 +159,26 @@ def change_passwd(request, id):
         form = AdminPasswordChangeForm(user)
     return {'form': form, "buttonTxt": _("Change"),
             "title": _("Change password for")+u" {}".format(user.username)}
+
+
+class AdminPermissionMixin(object):
+    @method_decorator(login_required)
+    @method_decorator(user_passes_test(is_admin, login_url=reverse_lazy("noPermissions")))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AdminPermissionMixin, self).dispatch(request, *args, **kwargs)
+
+
+class UsersList(AdminPermissionMixin, ListView):
+    model = User
+    paginate_by = settings.ADMIN_USER_OBJECTS_PER_PAGE
+    context_object_name = "users"
+    template_name = "admin_users_list.html"
+
+    def get_queryset(self):
+        return User.objects.filter(is_staff=False, is_superuser=False).order_by("date_joined")
+
+    def get_context_data(self, **kwargs):
+        context = super(UsersList, self).get_context_data(**kwargs)
+        context["currentPage"] = "admin_users_list"
+        context["title"] = _("Users")
+        return context

@@ -16,19 +16,7 @@
     <div class="navbar-header">
         <a class="navbar-brand" href="{% url 'admin_main' %}">{% trans "CityProblems Admin" %}</a>
     </div>
-    <div>
-        <ul class="nav navbar-nav">
-            {% if currentPage == "admin_adminsList" %}
-                <li class="active"><a href="{% url 'admin_adminsList' %}">{% trans "Administrators" %}</a></li>
-            {% else %}
-                <li><a href="{% url 'admin_adminsList' %}">{% trans "Administrators" %}</a></li>
-            {% endif %}
-            {% if currentPage == "admin_parametersList" %}
-                <li class="active"><a href="{% url 'admin_parametersList' %}">{% trans "Parameters" %}</a></li>
-            {% else %}
-                <li><a href="{% url 'admin_parametersList' %}">{% trans "Parameters" %}</a></li>
-            {% endif %}
-        </ul>        
+    <div>        
         <ul class="nav navbar-nav navbar-right">
                 <li>
             <a href="{% url 'home' %}" class="navbar-link">
@@ -52,25 +40,37 @@
         <div class="col-md-2 admin-side-menu">
             <div class="side-menu">
                 <div class="menu-section">
-                    <h4>PROBLEMS</h4>
+                    <h4>{% trans "PROBLEMS" %}</h4>
                     <ul>
-                        <li class="active"><a href="">All</a></li>
-                        <li><a href="">Open</a></li>
-                        <li><a href="">Closed</a></li>
-                        <li><a href="">Rejected</a></li>
+                        <li><a href="">{% trans "All" %}</a></li>
+                        <li><a href="">{% trans "Open" %}</a></li>
+                        <li><a href="">{% trans "Closed" %}</a></li>
+                        <li><a href="">{% trans "Rejected" %}</a></li>
                     </ul>
                 </div>
                 <div class="menu-section">
-                    <h4>USERS</h4>
+                    <h4>{% trans "USERS" %}</h4>
                     <ul>
-                        <li><a href="">All</a></li>
+                        {% if currentPage == "admin_users_list" %}
+                            <li class="active"><a href="{% url 'admin_UsersList' %}">{% trans "All" %}</a></li>
+                        {% else %}
+                            <li><a href="{% url 'admin_UsersList' %}">{% trans "All" %}</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="menu-section">
-                    <h4>SETTINGS</h4>
+                    <h4>{% trans "SETTINGS" %}</h4>
                     <ul>
-                        <li><a href="">Administrators</a></li>
-                        <li><a href="">Parameters</a></li>
+                        {% if currentPage == "admin_adminsList" %}
+                            <li class="active"><a href="{% url 'admin_adminsList' %}">{% trans "Administrators" %}</a></li>
+                        {% else %}
+                            <li><a href="{% url 'admin_adminsList' %}">{% trans "Administrators" %}</a></li>
+                        {% endif %}
+                        {% if currentPage == "admin_parametersList" %}
+                            <li class="active"><a href="{% url 'admin_parametersList' %}">{% trans "Parameters" %}</a></li>
+                        {% else %}
+                            <li><a href="{% url 'admin_parametersList' %}">{% trans "Parameters" %}</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
