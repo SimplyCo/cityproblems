@@ -71,6 +71,11 @@
                         {% else %}
                             <li><a href="{% url 'admin_parametersList' %}">{% trans "Parameters" %}</a></li>
                         {% endif %}
+                        {% if currentPage == "admin_categories_list" %}
+                            <li class="active"><a href="{% url 'admin_ProblemCategoriesList' %}">{% trans "Categories" %}</a></li>
+                        {% else %}
+                            <li><a href="{% url 'admin_ProblemCategoriesList' %}">{% trans "Categories" %}</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

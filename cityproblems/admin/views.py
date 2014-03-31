@@ -14,6 +14,7 @@ from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.forms.models import modelform_factory
 from django.contrib.auth import get_user_model
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.conf import settings
 
@@ -23,6 +24,7 @@ from cityproblems.utils import *
 from cityproblems.accounts.forms import RegisterUserForm
 from .models import SiteParameters
 from .utils import *
+from cityproblems.site.models import *
 
 User = get_user_model()
 
@@ -182,3 +184,45 @@ class UsersList(AdminPermissionMixin, ListView):
         context["currentPage"] = "admin_users_list"
         context["title"] = _("Users")
         return context
+
+
+class ProblemCategoriesList(AdminPermissionMixin, ListView):
+    model = ProblemCategory
+    context_object_name = "categories"
+    template_name = "admin_categories_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProblemCategoriesList, self).get_context_data(**kwargs)
+        context["currentPage"] = "admin_categories_list"
+        context["title"] = _("Categories")
+        return context
+
+
+class ProblemCategoryCreate(AdminPermissionMixin, CreateView):
+    model = ProblemCategory
+    template_name = "admin_form.html"
+    success_url = reverse_lazy('admin_ProblemCategoriesList')
+
+    def get_context_data(self, **kwargs):
+        context = super(ProblemCategoryCreate, self).get_context_data(**kwargs)
+        context["title"] = _("New category")
+        context["buttonTxt"] = _("Create")
+        return context
+
+
+class ProblemCategoryEdit(AdminPermissionMixin, UpdateView):
+    model = ProblemCategory
+    template_name = "admin_form.html"
+    success_url = reverse_lazy('admin_ProblemCategoriesList')
+
+    def get_context_data(self, **kwargs):
+        context = super(ProblemCategoryEdit, self).get_context_data(**kwargs)
+        context["title"] = _("Edit category")
+        context["buttonTxt"] = _("Save")
+        return context
+
+
+class ProblemCategoryDelete(AdminPermissionMixin, DeleteView):
+    model = ProblemCategory
+    template_name = "admin_form.html"
+    success_url = reverse_lazy('admin_ProblemCategoriesList')

@@ -1,0 +1,44 @@
+{% extends "admin_page.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block subtitle %}{{ title }}{% endblock subtitle %}
+
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+
+
+{% block site_page %}
+    <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2">
+        <a href="{% url 'admin_ProblemCategoryCreate' %}" class="btn btn-primary btn-sm">{% trans 'Add' %}</a>
+        <table class="table table-hover">
+            <tbody>
+                {% for i in categories %}
+                    <tr>
+                        <td>
+                            {{ i.title }}
+                        </td>
+                        <td>
+                            {{ i.description }}
+                        </td>
+                        <td>
+                            <a href="{% url 'admin_ProblemCategoryEdit' i.id %}" class="btn btn-primary btn-sm">{% trans 'Edit' %}</a>
+                            <form onsubmit="return confirm('{% trans "Do you really want to delete" %} {{ i.title }}?');" enctype="multipart/form-data" action="{% url 'admin_ProblemCategoryDelete' i.id %}?next={{ request.get_full_path }}" method="post" style="display: inline;">{% csrf_token %}
+                                <input type="submit" value="{% trans 'Delete' %}" class="btn btn-danger btn-sm" style="display: inline;">
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th>{% trans 'No categories' %}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}
