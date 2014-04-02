@@ -62,10 +62,5 @@ def edit_problem(request, id):
         center["latitude"] = "50.444388"
         center["longitude"] = "30.562592"
         center["zoom"] = 11
-    files = list()
-    for i in problem.problemimage_set.all():
-        files.append(dict(id=i.id, thumbnail=i.thumbnail.url,
-                          url=i.big_image.url, order_number=i.order_number,
-                          name=i.get_name()))
-    files = base64.standard_b64encode(json.dumps(files))
+    files = base64.standard_b64encode(json.dumps(problem.get_images()))
     return {"form": form, "center": center, "problem": problem, "files": files}

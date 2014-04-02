@@ -6,7 +6,7 @@
 {% block subtitle %} {% trans 'Problem' %} {% endblock %}
 
 {% block site_page %}
-    <div ng-app="myApp" ng-controller="NewProblemCtrl" ng-init="init('{{ files }}'); id={{ problem.id }}; uploadURL='{% url 'files_process_upload' %}'; removeURL='{% url 'files_process_file_remove' %}';">
+    <div ng-app="myApp" ng-controller="NewProblemCtrl" ng-init="init('{{ files }}'); id={{ problem.id }}; uploadURL='{% url 'files_process_upload' %}'; removeURL='{% url 'files_process_file_remove' %}'; moveURL='{% url 'files_process_image_move' %}';">
         <div class="col-md-5">
             {% verbatim %}
                 <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
@@ -22,13 +22,19 @@
             <table class="table table-hover">
                 {% verbatim %}
                 <tbody>
-                    <tr ng-repeat="file in files">
+                    <tr ng-repeat="file in files| orderBy: 'order_number'">
                         <td ng-hide="file.file"><img width="100px" ng-src="{{ file.thumbnail }}"></td>
                         <td ng-hide="file.file"><a ng-href="{{ file.url }}">{{ file.name }}</a></td>
+                        {% endverbatim %}
+                        <td ng-hide="file.file">
+                            <button type="button" class="btn btn-primary btn-xs" ng-disabled="$first" ng-click="moveImage(file, -1);">{% trans "Up" %}</button>
+                            <button type="button" class="btn btn-primary btn-xs" ng-disabled="$last" ng-click="moveImage(file, 1);">{% trans "Down" %}</button>
+                        </td>
+                        {% verbatim %}
                         <td ng-hide="file.file"><button type="button" class="close" ng-click="remove(file);">&times;</button></td>
                         <td ng-show="file.file"><progressbar class="progress-striped active" value="file.progress"><b>{{file.progress}}%</b></progressbar></td>
                         {% endverbatim %}
-                        <td ng-show="file.file"><button type="button" class="btn btn-danger btn-sm" ng-click="abort(file);">{% trans "Abort" %}</button></td>
+                        <td ng-show="file.file"><button type="button" class="btn btn-danger btn-xs" ng-click="abort(file);">{% trans "Abort" %}</button></td>
                     </tr>
                 </tbody>
             </table>

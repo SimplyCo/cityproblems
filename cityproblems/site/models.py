@@ -34,6 +34,14 @@ class Problem(models.Model):
     def is_can_edit(self, user):
         return user.is_authenticated() and (user.is_staff or user == self.author)
 
+    def get_images(self):
+        files = list()
+        for i in self.problemimage_set.all():
+            files.append(dict(id=i.id, thumbnail=i.thumbnail.url,
+                            url=i.big_image.url, order_number=i.order_number,
+                            name=i.get_name()))
+        return files
+
 
 class ProblemImage(models.Model):
     thumbnail = models.ImageField(blank=True, null=True, upload_to='images/thumbnail/%Y/%m/%d')

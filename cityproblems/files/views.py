@@ -42,7 +42,12 @@ def process_upload(request):
         file.medium_image = request.FILES.get("file")
         file.big_image = request.FILES.get("file")
     file.problem = problem
-    file.order_number = 0
+    order_number = problem.problemimage_set.all().order_by("-order_number").values_list("order_number")[:1]
+    if not order_number:
+        order_number = 1
+    else:
+        order_number = order_number[0][0] + 1
+    file.order_number = order_number
     file.save()
     return {"id": file.id, "url": file.big_image.url,
             "thumbnail": file.thumbnail.url, "order_number": file.order_number}
@@ -67,3 +72,40 @@ def process_file_remove(request):
     file.delete()
     return {"Ok": "Ok"}
 
+
+@ajax_request
+def process_image_move(request):
+    if request.method != 'POST':
+        return HttpResponse("Use post")
+    try:
+        body = json.loads(request.body)
+    except ValueError:
+        return {'Error': "Error: can`t parse message"}
+    id = body.get('id', 0)
+    action = body.get('action', 0)
+    try:
+        action = int(action)
+    except ValueError:
+        return {'Error': "Wrong parameter"}
+    try:
+        object = ProblemImage.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return {'Error': "No such option"}
+    if not object.problem.is_can_edit(request.user):
+        return {"Error": "Permission denied"}
+    if action < 0:
+        swapObject = ProblemImage.objects.filter(order_number__lt=object.order_number).order_by("-order_number")\
+            .only("order_number")[:1]
+    elif action > 0:
+        swapObject = ProblemImage.objects.filter(order_number__gt=object.order_number).only("order_number")[:1]
+    else:
+        return {'Error': "Wrong parameter"}
+    if not len(swapObject):
+        return {'Error': "Wrong action"}
+    swapObject = swapObject[0]
+    swapObject.order_number += object.order_number
+    object.order_number = swapObject.order_number - object.order_number
+    swapObject.order_number -= object.order_number
+    object.save()
+    swapObject.save()
+    return {"ok": "ok"}

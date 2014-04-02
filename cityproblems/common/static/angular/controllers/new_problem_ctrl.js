@@ -1,4 +1,4 @@
-var NewProblemCtrl = function ($scope, $upload, $http)
+var NewProblemCtrl = function ($scope, $upload, $http, $timeout)
 {
     "use strict";
     function setMarker(latLng)
@@ -25,7 +25,8 @@ var NewProblemCtrl = function ($scope, $upload, $http)
         var latLng = new google.maps.LatLng(parseFloat(latitude.replace(",", ".")), parseFloat(longitude.replace(",", ".")));
         var mapOptions = {
             zoom: parseInt($scope.zoom),
-            center: latLng
+            center: latLng,
+            scrollwheel: false,
         }
         $scope.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
         if($scope.latitude != 0 && $scope.longitude != 0)
@@ -80,12 +81,26 @@ var NewProblemCtrl = function ($scope, $upload, $http)
           }
           else
           {
+                if (window.FileReader && file.file.type.indexOf('image') > -1) 
+                {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL(file.file);
+                    fileReader.onload = function(e) 
+                    {
+                        $timeout(function() {
+                                file.thumbnail = e.target.result;
+                                file.file = null;
+                        });
+                    }
+                }else
+                {
+                    file.thumbnail = data.thumbnail;
+                    file.file = null;
+                }
                 file.id = data.id;
                 file.url = data.url;
                 file.order_number = data.order_number;
-                file.thumbnail = data.thumbnail;
                 file.name = file.file.name;
-                file.file = null;
                 file.upload = null;
           }
             $scope.isUploadingNow=false;
@@ -134,5 +149,28 @@ var NewProblemCtrl = function ($scope, $upload, $http)
     {
         $scope.alerts.splice(index, 1);
     };
+    
+    $scope.moveImage=function(file, action)
+    {
+        $http.post($scope.moveURL, {"id": file.id, "action": action})
+                .success(function(data)
+                {
+                    if ("Error" in data)
+                        $scope.alerts.push({type: 'danger', msg: data["Error"]});
+                    else
+                    {
+                        $scope.files.sort(function(a,b){return a["order_number"]-b["order_number"]});
+                        var index = $scope.files.indexOf(file);
+                        $scope.files[index+action]["order_number"] += $scope.files[index]["order_number"];
+                        $scope.files[index]["order_number"] = $scope.files[index+action]["order_number"] - $scope.files[index]["order_number"];
+                        $scope.files[index+action]["order_number"] -= $scope.files[index]["order_number"];
+                    }
+                })
+                .error(function(data)
+                {
+                    //document.write(data);
+                    $scope.alerts.push({type: 'danger', msg: "Error while move image"});
+                });
+    }
 };
-NewProblemCtrl.$inject = ["$scope", "$upload", "$http"];
+NewProblemCtrl.$inject = ["$scope", "$upload", "$http", "$timeout"];
