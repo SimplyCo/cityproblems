@@ -3,19 +3,48 @@
 {% load static %}
 
 {% block base_styles %}
-<link rel="stylesheet" media="screen" type="text/css"
-    href="{% get_static_prefix %}site/css/site_page.css" />
-{% block site_page_styles %}
-{% endblock site_page_styles %}
+    <link rel="stylesheet" media="screen" type="text/css"
+        href="{% get_static_prefix %}site/css/site_page.css" />
+    <link rel="stylesheet" media="screen" type="text/css"
+          href="{% get_static_prefix %}site/css/popups.css"/>
+    {% block site_page_styles %}
+    {% endblock site_page_styles %}
 {% endblock base_styles %}
 
 
 {% block body %}
 
-BODY
+<div id="container">
 
-{% block site_page %}
-{% endblock site_page %}
+    <div id="header">
+
+        {% include 'site/menu/menu.html' %}
+
+    </div>
+
+    <div class="container">
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissable">
+            {% else %}
+                <div class="alert alert-{{ message.tags }} alert-dismissable">
+            {% endif %}
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message }}
+            </div>
+        {% endfor %}
+        {% block site_page %}
+        {% endblock site_page %}
+    </div>
+
+    <div id="footer">
+        Footer
+    </div>
+
+</div>
+
+
+{% include 'site/popups/login_popup.html' %}
 
 {% endblock body %}
 
