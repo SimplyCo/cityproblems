@@ -5,6 +5,7 @@ urlpatterns = patterns('',
                        url(r'^', include('cityproblems.site.urls')),
                        url(r'^accounts/', include('cityproblems.accounts.urls')),
                        url(r'^admin/', include('cityproblems.admin.urls')),
+                       url(r'^files/', include('cityproblems.files.urls')),
                        )
 
 

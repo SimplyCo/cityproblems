@@ -4,5 +4,8 @@
 {% block subtitle %} {% trans 'My cabinet' %} {% endblock %}
 
 {% block site_page %}
-    {% trans 'My cabinet' %}
+    <div class="col-md-8 col-md-offset-2">
+        <a href="{% url 'site_create_problem' %}" class="btn btn-primary btn-sm">{% trans "New problem" %}</a>
+        <p>{% trans 'My cabinet' %}</p>
+    </div>
 {% endblock site_page %}

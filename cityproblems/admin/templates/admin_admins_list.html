@@ -32,7 +32,7 @@
                                     <input type="submit" value="{% trans 'Unlock' %}" class="btn btn-danger btn-sm" style="display: inline;">
                                 {% endif %}
                             </form>
-                            <form enctype="multipart/form-data" action="{% url 'admin_processAdminRemove' %}" method="post" style="display: inline;">{% csrf_token %}
+                            <form onsubmit="return confirm('{% trans "Do you really want to delete" %} {{ i.username }}?');" enctype="multipart/form-data" action="{% url 'admin_processAdminRemove' %}" method="post" style="display: inline;">{% csrf_token %}
                                 <input id="user_id" name="id" type="text" value="{{ i.id }}" style="display: none;">
                                 <input type="submit" value="{% trans 'Remove' %}" class="btn btn-danger btn-sm" style="display: inline;">
                             </form>

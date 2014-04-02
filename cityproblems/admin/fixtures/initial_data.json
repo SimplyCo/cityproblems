@@ -1,0 +1,38 @@
+[
+{
+    "pk": 1, 
+    "model": "admin.siteparameters", 
+    "fields": {
+        "value": "My cool site", 
+        "key": "title", 
+        "description": "Site title"
+    }
+},
+{
+    "pk": 2, 
+    "model": "admin.siteparameters", 
+    "fields": {
+        "value": "30.562592", 
+        "key": "longitude", 
+        "description": "Default map center"
+    }
+},
+{
+    "pk": 3, 
+    "model": "admin.siteparameters", 
+    "fields": {
+        "value": "50.444388", 
+        "key": "latitude", 
+        "description": "Default map center"
+    }
+},
+{
+    "pk": 4, 
+    "model": "admin.siteparameters", 
+    "fields": {
+        "value": "11", 
+        "key": "zoom", 
+        "description": "Map zoom"
+    }
+}
+]

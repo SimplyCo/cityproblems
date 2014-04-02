@@ -1,0 +1,64 @@
+{% extends "site/full_screen_site_page.html" %}
+{% load i18n %}
+{% load bootstrap %}
+{% load static %}
+
+{% block subtitle %} {% trans 'Problem' %} {% endblock %}
+
+{% block site_page %}
+    <div ng-app="myApp" ng-controller="NewProblemCtrl" ng-init="init('{{ files }}'); id={{ problem.id }}; uploadURL='{% url 'files_process_upload' %}'; removeURL='{% url 'files_process_file_remove' %}';">
+        <div class="col-md-5">
+            {% verbatim %}
+                <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+            {% endverbatim %}
+            <h4>{% trans "Report problem" %}</h4>
+            <form method="post" enctype="multipart/form-data" class="form-horizontal" action="{{ request.get_full_path }}" name="form">{% csrf_token %}
+                {{ form |bootstrap }}
+            </form>
+            <hr>
+            
+            
+            {% trans "Images" %}:
+            <table class="table table-hover">
+                {% verbatim %}
+                <tbody>
+                    <tr ng-repeat="file in files">
+                        <td ng-hide="file.file"><img width="100px" ng-src="{{ file.thumbnail }}"></td>
+                        <td ng-hide="file.file"><a ng-href="{{ file.url }}">{{ file.name }}</a></td>
+                        <td ng-hide="file.file"><button type="button" class="close" ng-click="remove(file);">&times;</button></td>
+                        <td ng-show="file.file"><progressbar class="progress-striped active" value="file.progress"><b>{{file.progress}}%</b></progressbar></td>
+                        {% endverbatim %}
+                        <td ng-show="file.file"><button type="button" class="btn btn-danger btn-sm" ng-click="abort(file);">{% trans "Abort" %}</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <input ng-disabled="isUploadingNow" type="file" ng-file-select="onFileSelect($files);" accept="image/*" multiple>
+            </div>
+            
+        </div>
+        <div class="col-md-7" ng-init="default_latitude='{{ center.latitude }}'; default_longitude='{{ center.longitude }}'; zoom='{{ center.zoom }}'; map_init();">
+            <h4>{% trans "Mark location on the map" %}</h4>
+            <div style="margin-bottom: 15px;">
+                <div id="map_canvas" style="width:100%; height:500px;"></div>
+            </div>
+            <button onclick="document.form.submit();" class="btn btn-primary btn-sm">{% trans "Save" %}</button>
+        </div>
+    </div>
+{% endblock site_page %}
+
+{% block site_page_scripts %}
+    <script src="{% get_static_prefix %}libs/angular/angular-file-upload-html5-shim.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-cookies.min.js"></script>
+    <script>
+        var app = angular.module("myApp", ["ui.bootstrap", "angularFileUpload", "ngCookies"]);
+        app.run(['$http','$cookies',function($http, $cookies)
+        {
+            $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
+        }]);
+    </script>
+    <script src="{% get_static_prefix %}libs/angular/ui-bootstrap-tpls-0.10.0.min.js"></script>
+    <script src="{% get_static_prefix %}libs/angular/angular-file-upload.min.js"></script>
+    <script src="{% get_static_prefix %}angular/controllers/new_problem_ctrl.js"></script>
+{% endblock site_page_scripts %}

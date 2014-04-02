@@ -22,3 +22,4 @@ nosetests.xml
 *.kdev4
 *.sqlite3
 cityproblems/settings_mail.py
+/images/

@@ -21,7 +21,7 @@ import os
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
-print __name__
+
 
 def send_mail(to, subject, text, attach):
     ###
