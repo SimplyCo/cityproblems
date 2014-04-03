@@ -76,6 +76,16 @@ def edit_parameter(request, id):
 
 @login_required
 @user_passes_test(is_admin, login_url=reverse_lazy("no_permissions"))
+@render_to("admin_home.html")
+def admin_home(request):
+    return {
+        "title": _("Admin Home"),
+        "currentPage": "admin_home",
+    }
+
+
+@login_required
+@user_passes_test(is_admin, login_url=reverse_lazy("no_permissions"))
 @render_to("admin_admins_list.html")
 def admins_list(request):
     adminsList = User.objects.filter(is_staff=True, is_superuser=False)

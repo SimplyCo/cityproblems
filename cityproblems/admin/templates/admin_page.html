@@ -12,32 +12,68 @@
 
 
 {% block body %}
-<nav class="navbar navbar-default navbar-inverse" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="{% url 'admin_main' %}">{% trans "CityProblems Admin" %}</a>
-    </div>
-    <div>        
-        <ul class="nav navbar-nav navbar-right">
-                <li>
-            <a href="{% url 'home' %}" class="navbar-link">
-                {% trans 'Back to site' %}&nbsp;&rarr;
-            </a>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#admin-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'admin_home' %}">{% trans "CityProblems Admin" %}</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="admin-navbar-collapse">
+
+            <!--
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link</a></li>
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
                 </li>
-            {% if user.is_authenticated %}
+            </ul>
+            -->
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="{% url 'home' %}" class="navbar-link">
+                        {% trans 'Back to site' %}&nbsp;&rarr;
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                    <li><a href="{% url "logout" %}?next={{ request.get_full_path }}">{% trans 'Logout' %}</a></li>
+                        <li><a href="{% url "logout" %}?next={{ request.get_full_path }}">{% trans 'Logout' %}</a></li>
                     </ul>
                 </li>
-            {% endif %}
-        </ul>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
+    <!-- /.container-fluid -->
 </nav>
-<div class="admin-container">
+
+
+<div class="container-fluid admin-container">
     <div class="row">
 
-        <div class="col-md-2 admin-side-menu">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 admin-side-menu">
             <div class="side-menu">
                 <div class="menu-section">
                     <h4>{% trans "PROBLEMS" %}</h4>
@@ -81,7 +117,8 @@
             </div>
         </div>
 
-        <div class="col-md-10">
+        <div class="col-md-10 col-xs-offset-4 col-sm-offset-3 col-md-offset-2 admin-main-part">
+
             <div class="admin-container-message">
             {% for message in messages %}
                 {% if message.tags == "error" %}

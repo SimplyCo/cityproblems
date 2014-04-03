@@ -1,10 +1,11 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>
-    {% block title %}CityProblems Admin{% endblock title%}
-    {% block subtitle %} - Главная{% endblock subtitle %}
+    {% block title %}{% trans 'CityProblems Admin' %}{% endblock title%}
+    {% block subtitle %} - {% trans 'Main' %}{% endblock subtitle %}
     </title>
     <meta http-equiv="Content-Type" content="text/html" charset="utf8">
 

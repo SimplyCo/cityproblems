@@ -1,10 +1,25 @@
+/* SIDE MENU */
+
 .admin-side-menu {
     background-color: #505050;
     color: #FFFFE0;
     font-size: 14px;
+    position: fixed;
+    top: 45px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 10;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.side-menu {}
+.side-menu {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
 
 .side-menu .menu-section {margin: 10px 10px 20px 10px;}
 
@@ -15,8 +30,7 @@
 .side-menu .menu-section ul li a {
     font-size: 13px;
     display: block;
-    border-radius: 5px;
-    padding: 2px 5px;
+    padding: 4px 6px;
 }
 .side-menu .menu-section ul li:hover a {
     background-color: #59A80F;
@@ -36,3 +50,12 @@
 .side-menu a {}
 .side-menu a:hover {color: #FFFFE0;}
 
+
+
+
+/* REST ADMIN PART */
+
+.admin-main-part {
+
+    padding-top: 55px;
+}

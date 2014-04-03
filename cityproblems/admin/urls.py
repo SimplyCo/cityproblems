@@ -5,10 +5,10 @@ from .views import UsersList, ProblemCategoriesList,\
     ProblemCategoryDelete
 
 urlpatterns = patterns('cityproblems.admin.views',
+                       url(r'^$', 'admin_home', name='admin_home'),
                        url(r'^addAdmin/$', 'add_admin', name='admin_addAdmin'),
                        url(r'^addParameter/$', 'add_parameter', name='admin_addParameter'),
                        url(r'^editParameter/(\d+)/$', 'edit_parameter', name='admin_editParameter'),
-                       url(r'^$', 'admins_list', name='admin_main'),
                        url(r'^adminsList/$', 'admins_list', name='admin_adminsList'),
                        url(r'^parametersList/$', 'parameters_list', name='admin_parametersList'),
                        url(r'^processLock/$', 'process_lock', name='admin_processLock'),

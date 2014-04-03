@@ -1,0 +1,21 @@
+{% extends "admin_page.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load bootstrap %}
+
+{% block subtitle %} - {{ title }}{% endblock subtitle %}
+
+{% block site_page_styles %}
+{% endblock site_page_styles %}
+
+
+{% block site_page %}
+<h3>{% trans 'Dashboard' %}</h3>
+<hr/>
+<p>{% trans 'Select item from the sidebar menu' %}</p>
+{% endblock %}
+
+
+{% block site_page_scripts %}
+{% endblock site_page_scripts %}
