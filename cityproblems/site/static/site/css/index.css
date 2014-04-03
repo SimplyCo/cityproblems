@@ -35,3 +35,8 @@ div#content {
 .paddedContent {
     height: 100%;
 }
+
+.index-login-form {
+    width: 400px;
+    padding: 10px 20px 20px 20px;
+}

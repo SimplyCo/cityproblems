@@ -1,28 +1,30 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+import json
+import base64
+
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-
 from annoying.decorators import render_to
+
 from .models import *
 from .forms import *
 from cityproblems.admin.models import SiteParameters
 
-import json
-import base64
-
 
 @render_to('site/index.html')
 def home(request):
-    return {}
+    form = AuthenticationForm()
+    return {
+        'form': form,
+    }
 
 
 @render_to('site/no_permissions.html')

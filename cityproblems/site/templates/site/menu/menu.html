@@ -39,7 +39,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {% if not user.is_authenticated %}
-                    <li><a href="{% url 'login' %}" class="login-button">{% trans "Login" %}</a></li>
+                    <li><a href="javascript:void(0);" class="login-button">{% trans "Login" %}</a></li>
                     <li><a href="{% url 'accounts_register' %}">{% trans "Register" %}</a></li>
                 {% else %}
                 <li class="dropdown">
