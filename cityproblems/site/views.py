@@ -13,10 +13,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from annoying.decorators import render_to
+from django.contrib.auth import get_user_model
 
 from .models import *
 from .forms import *
 from cityproblems.admin.models import SiteParameters
+
+User = get_user_model()
 
 
 @render_to('site/index.html')
@@ -34,8 +37,20 @@ def no_permissions(request):
 
 @login_required
 @render_to('site/site_user_cabinet.html')
-def user_cabinet(request):
-    return {}
+def user_cabinet(request, username=None):
+    if username is None:
+        user = request.user
+    else:
+        user = get_object_or_404(User, username=username)
+    problems = user.problem_set.only("id", "title").filter(status="published")
+    return {"problems": problems}
+
+
+@login_required
+@render_to('site/site_problem_view.html')
+def problem_view(request, id):
+    problem = get_object_or_404(Problem, id=id, status="published")
+    return {"problem": problem}
 
 
 @login_required

@@ -5,7 +5,22 @@
 
 {% block site_page %}
     <div class="col-md-8 col-md-offset-2">
+        <h3>{% trans 'My cabinet' %}</h3>
         <a href="{% url 'site_create_problem' %}" class="btn btn-primary btn-sm">{% trans "New problem" %}</a>
-        <p>{% trans 'My cabinet' %}</p>
+        <table class="table table-hover">
+            <tbody>
+                {% for i in problems %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'site_problem_view' i.id %}">{{ i.title }}</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th>{% trans 'No problems' %}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock site_page %}

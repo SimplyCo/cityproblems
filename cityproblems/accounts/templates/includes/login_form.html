@@ -3,7 +3,7 @@
 {% load i18n %}
 
 <h3>{% trans "Login" %}</h3>
-<form method="post" enctype="multipart/form-data" class="form-horizontal" action="{{ request.get_full_path }}">{% csrf_token %}
+<form method="post" enctype="multipart/form-data" class="form-horizontal" action="{% url 'login' %}?next={{ request.get_full_path }}">{% csrf_token %}
     {{ form|bootstrap }}
     <input type="submit" value="{% trans 'Login' %}" class="btn btn-primary btn-sm">
     <a href="{% url 'accounts_register' %}">{% trans "Register" %}</a>

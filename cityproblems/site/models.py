@@ -38,8 +38,8 @@ class Problem(models.Model):
         files = list()
         for i in self.problemimage_set.all():
             files.append(dict(id=i.id, thumbnail=i.thumbnail.url,
-                            url=i.big_image.url, order_number=i.order_number,
-                            name=i.get_name()))
+                              url=i.big_image.url, order_number=i.order_number,
+                              name=i.get_name()))
         return files
 
 
