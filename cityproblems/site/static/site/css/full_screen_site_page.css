@@ -6,6 +6,11 @@ E2FF9E
 F0F2DD
 */
 
+#top-navbar {
+    z-index: 2000;
+}
+
+
 div#container {
     height: 100%;
     width: 100%;
