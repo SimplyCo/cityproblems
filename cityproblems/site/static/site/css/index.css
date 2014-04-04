@@ -6,11 +6,12 @@ E2FF9E
 F0F2DD
 */
 
-div#index-block > div {
+#content {
     margin-top: 45px;
     padding-bottom: 35px;
 }
 
+/*
 div#index-left {
     left: 0;
     bottom: 0;
@@ -18,16 +19,16 @@ div#index-left {
     overflow: hidden;
     position: absolute;
     width: 300px;
-    /* background-color: #F0F2DD; */
     background-color: #FEFEFE;
     border-right: 1px solid #E0E0E0;
 }
+*/
 
 div#content {
     right: 0;
     bottom: 0;
     top: 0;
-    left: 300px;
+    left: 0;
     overflow: hidden;
     position: absolute;
 }
@@ -39,4 +40,108 @@ div#content {
 .index-login-form {
     width: 400px;
     padding: 10px 20px 20px 20px;
+}
+
+
+
+
+
+/* SIDEBAR */
+
+#sidebar-wrapper {
+  margin-right: -250px;
+  right: 0;
+  width: 250px;
+  background: rgba(50, 50, 50, 0.85);
+  position: fixed;
+  overflow-y: auto;
+  z-index: 1000;
+  top: 45px;
+  bottom: 35px;
+  -webkit-transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  -ms-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  line-height: 40px;
+  text-indent: 20px;
+}
+
+.sidebar-nav li a {
+  color: #999999;
+  display: block;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.sidebar-nav li a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+  text-decoration: none;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+  height: 55px;
+  line-height: 55px;
+  font-size: 16px;
+  color: #59A80F;
+}
+
+/*
+.sidebar-nav > .sidebar-brand a {
+  color: #999999;
+}
+.sidebar-nav > .sidebar-brand a:hover {
+  color: #fff;
+  background: none;
+}
+*/
+
+#menu-toggle {
+  top: 45px;
+  right: 0;
+  position: fixed;
+  z-index: 1;
+  -webkit-transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  -ms-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+
+#menu-toggle.inactive {
+    margin-right: -50px;
+}
+
+#sidebar-wrapper.active {
+  right: 250px;
+  width: 250px;
+  -webkit-transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  -ms-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+
+.toggle {
+  margin: 5px 5px 0 0;
+  font-size: 24px;
+  padding: 4px 12px;
 }

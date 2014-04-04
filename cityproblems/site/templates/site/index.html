@@ -1,6 +1,7 @@
 {% extends "site/full_screen_site_page.html" %}
 
 {% load static %}
+{% load i18n %}
 
 {% block site_page_styles %}
 <link rel="stylesheet" media="screen" type="text/css"
@@ -11,9 +12,26 @@
 
 <div id="index-block">
 
-    <div id="index-left">
-        <div class="paddedContent">This is the left column2</div>
+    <!-- Side Menu -->
+    <a id="menu-toggle" href="#" class="btn btn-primary btn-xs toggle"><i class="fa fa-caret-square-o-left"></i></a>
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-default btn-xs pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                {% trans 'Menu' %}
+            </li>
+            <li>
+                <a href="">{% trans 'All Problems' %}</a>
+            </li>
+            <li>
+                <a href="">{% trans 'Reported by me' %}</a>
+            </li>
+            <li>
+                <a href="">{% trans 'Report new problem' %}</a>
+            </li>
+        </ul>
     </div>
+    <!-- /Side Menu -->
 
     <div id="content">
         <div class="paddedContent">
