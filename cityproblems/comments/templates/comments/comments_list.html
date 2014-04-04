@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<div ng-controller="commentsCtrl" ng-init="profileURL='{% url "accounts_profile_view" %}'; userName='{{ user.username }}'; hasExtPerm={{ user.is_staff | lower}}; sendUrl='{% url "saveCommentJSON" fk_item.id %}'; getCommentsLink='{% url "getCommentsLstJSON" fk_item.id %}'; changesLink='{% url "saveCommentChangesJSON" %}'; rmLink='{% url "rmCommentJSON" %}'; loadComments();">
+
+    <div ng-show="isLoadComplete">
+        <div ng-repeat="comment in comments" ng-include="'{% url "getCommentHTML" %}'" autoscroll>
+        </div>
+
+        <div>
+            <form class="form-horizontal" name="sendNewComment" ng-submit="sendnewcomment()">
+                <div class="form-group">
+                    <textarea ng-required="true" class="form-control" ng-model="newComment.text" placeholder="{% trans 'Type here' %}..."></textarea>
+                </div>
+            
+                <div class="form-group">
+                    <input type="submit" value="{% trans "Send" %}" class="btn btn-primary btn-sm" ng-disabled="sendNewComment.$invalid">
+                </div>
+            </form>
+        </div>
+
+        <h4 ng-hide="userName" style="margin-top: 50px;"><a href="{% url "login"%}?next={{ request.path }}">{% trans "Log in" %}</a> {% trans "to leave comment" %}.</h4>
+    </div>
+    <div ng-hide="isLoadComplete">
+        <h4>{% trans "Loading" %}...</h4>
+    </div>
+
+</div>

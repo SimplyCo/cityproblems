@@ -12,10 +12,3 @@ class ProblemEditForm(forms.ModelForm):
             'latitude': forms.HiddenInput(),
             'longitude': forms.HiddenInput(),
         }
-
-    def save(self, commit=True):
-        problem = super(ProblemEditForm, self).save(commit=False)
-        problem.status = "published"
-        if commit:
-            problem.save()
-        return problem

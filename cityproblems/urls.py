@@ -6,6 +6,7 @@ urlpatterns = patterns('',
                        url(r'^accounts/', include('cityproblems.accounts.urls')),
                        url(r'^admin/', include('cityproblems.admin.urls')),
                        url(r'^files/', include('cityproblems.files.urls')),
+                       url(r'^comments/', include('cityproblems.comments.urls')),
                        )
 
 

@@ -1,0 +1,58 @@
+{% load i18n %}
+
+    <!-- comment -->
+    <!-- {% verbatim %} -->
+    <div class="comment" id="comment_{{ comment.id }}">
+
+            <div class="comment-heading">
+                <a class="comment-username" ng-href="{{profileURL}}{{comment.data.username}}/">{{ comment.data.username }}</a>
+                <span class="comment-datetime"> {{ comment.data.created_when| date :'medium' }}</span>
+            </div>
+
+            <div class="comment-content">
+                <div class="comment-avatar">
+                    <img ng-src="{{ comment.data.avatar }}" alt="avatar">
+                </div>
+                <div class="comment-text" ng-bind-html="comment.data.content | linkify"  ng-hide="comment.showEdit">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+    <!-- {% endverbatim %} -->
+
+        
+        <div ng-show="comment.showEdit">
+            <div class="form-group">
+                <textarea ng-required="true" class="form-control" ng-model="comment.data.content" maxlength="10000" placeholder="{% trans 'Type here' %}..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <button class="btn btn-primary btn-sm" ng-click="sendchangedcomment(comment)" ng-disabled="!comment.data.content">{% trans "Save" %}</button>
+                {% trans "or" %} <a href ng-click="comment.showEdit=false; comment.data.content=comment.data.backup;">{% trans "Cancel" %}</a>
+            </div>
+        </div>
+
+        <div ng-hide="comment.showEdit" class="comment_controls">
+            <a href ng-click="comment.showReply=!comment.showReply">{% trans "Reply" %}</a>
+            <span ng-show="comment.data.username == userName">| <a href ng-click="comment.showEdit=!comment.showEdit; comment.data.backup=comment.data.content; comment.showReply=false">{% trans "Edit" %}</a></span>
+            <span ng-show="hasExtPerm">| <a href ng-click="remove(comment)">{% trans "Remove thread" %}</a></span>
+        </div>
+
+
+        <div ng-show="comment.showReply">
+            <div class="form-group">
+                <textarea ng-required="true" class="form-control" ng-model="comment.reply" maxlength="10000" placeholder="{% trans 'Type here' %}..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <button class="btn btn-primary btn-sm" ng-click="sendnewcomment(comment)" ng-disabled="!comment.reply"> {% trans "Send" %}</button>
+            </div>
+        </div>
+    </div> <!-- end ./comment -->
+
+
+
+    <!-- child comments / replies -->
+    <ul style="list-style-type: none;" ng-class="{'noMargin': comment.data.depth>6}">
+        <li ng-repeat="comment in comment.children" ng-include="'{% url "getCommentHTML" %}'" class="node"></li>
+    </ul>

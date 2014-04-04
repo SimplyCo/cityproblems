@@ -9,5 +9,6 @@ urlpatterns = patterns('cityproblems.site.views',
                        url(r'^edit/problem/(\d+)/$', 'edit_problem', name='site_edit_problem'),
                        url(r'^add/problem/(\d+)/$', 'edit_problem', name='site_add_problem'),
                        url(r'^problem/(\d+)/$', 'problem_view', name='site_problem_view'),
+                       url(r'^process_follow/$', 'process_follow', name='site_process_follow'),
                        )
 

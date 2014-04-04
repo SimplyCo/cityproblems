@@ -1,0 +1,11 @@
+.comment {margin-bottom: 10px;}
+.comment-heading {}
+a.comment-username {}
+.comment-datetime{
+    font-size: smaller;
+    color: #808080;
+}
+.comment-content {}
+.comment-avatar {width: 100px; height: 100px; float: left;}
+.comment-avatar img {width: 100px; height: 100px;}
+.comment-text {min-height: 100px; float: left;}

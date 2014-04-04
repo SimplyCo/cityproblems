@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 import os
 
@@ -30,6 +31,7 @@ class Problem(models.Model):
     latitude = models.FloatField(default=0)
     longitude = models.FloatField(default=0)
     status = models.CharField(max_length=20, choices=PROBLEM_STATUS_CHOICES, default="creating")
+    follow_by = models.ManyToManyField(User, related_name="follow_by")
 
     def is_can_edit(self, user):
         return user.is_authenticated() and (user.is_staff or user == self.author)
@@ -41,6 +43,9 @@ class Problem(models.Model):
                               url=i.big_image.url, order_number=i.order_number,
                               name=i.get_name()))
         return files
+
+    def get_absolute_url(self):
+        return reverse("site_problem_view", args=(self.id,))
 
 
 class ProblemImage(models.Model):

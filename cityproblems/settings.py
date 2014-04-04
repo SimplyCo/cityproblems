@@ -34,6 +34,7 @@ INSTALLED_APPS = (
     'cityproblems.mailsender',
     'cityproblems.accounts',
     'cityproblems.admin',
+    'cityproblems.comments',
 
     'bootstrapform',
 )
