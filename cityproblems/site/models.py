@@ -1,15 +1,19 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext, ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
 import os
+import json
+import base64
 
 User = get_user_model()
 
 PROBLEM_STATUS_CHOICES = (
-    (u'creating', _(u'Creating')),
-    (u'published', _(u'Published')),
+    (u'creating', ugettext(u'Creating')),
+    (u'open', ugettext(u'Open')),
+    (u'closed', ugettext(u'Closed')),
+    (u'rejected', ugettext(u'Rejected')),
 )
 
 
@@ -46,6 +50,23 @@ class Problem(models.Model):
 
     def get_absolute_url(self):
         return reverse("site_problem_view", args=(self.id,))
+
+    def get_statuses(self, in_base64=True):
+        statuses = [i for i in PROBLEM_STATUS_CHOICES if not(i[0] == "creating" or i[0] == "rejected")]
+        if in_base64:
+            return base64.standard_b64encode(json.dumps(statuses).encode("utf-8"))
+        return statuses
+
+    def get_admin_statuses(self, in_base64=True):
+        statuses = [i for i in PROBLEM_STATUS_CHOICES if i[0] != "creating"]
+        if in_base64:
+            return base64.standard_b64encode(json.dumps(statuses).encode("utf-8"))
+        return statuses
+
+    def get_status(self):
+        for i in PROBLEM_STATUS_CHOICES:
+            if i[0] == self.status:
+                return i[1]
 
 
 class ProblemImage(models.Model):

@@ -1,4 +1,4 @@
-var problemViewCtrl = function ($scope)
+var problemViewMapCtrl = function ($scope)
 {
     "use strict";
     function setMarker(latLng)
@@ -26,4 +26,33 @@ var problemViewCtrl = function ($scope)
         }        
     }    
 };
-problemViewCtrl.$inject = ["$scope"];
+problemViewMapCtrl.$inject = ["$scope"];
+
+var problemViewCtrl = function ($scope, $http)
+{
+    "use strict";
+    $scope.init=function(statuses, status)
+    {
+        $scope.statuses=angular.fromJson(atob(statuses));
+        $scope.status=status;
+    }
+    
+    $scope.$watch('status', function(status, oldValue)
+    {
+        if(status == oldValue)
+            return;
+        $http.post($scope.statusChangeURL, {"status": $scope.status})
+                .success(function(data)
+                {
+                    if ("Error" in data)
+                        $scope.alerts.push({type: 'danger', msg: data["Error"]});
+                    else
+                        $scope.alerts.push({type: 'success', msg: data["success"]});
+                })
+                .error(function()
+                {
+                    $scope.alerts.push({type: 'danger', msg: "Error while change status"});
+                });
+    });
+}
+problemViewCtrl.$inject = ["$scope", "$http"];

@@ -1,6 +1,8 @@
 {% extends "site/site_page.html" %}
+
 {% load i18n %}
 {% load static %}
+{% get_current_language as LANGUAGE_CODE %}
 
 {% block subtitle %} {{ problem.title }} {% endblock %}
 
@@ -13,11 +15,8 @@
         {% verbatim %}
             <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
         {% endverbatim %}
-        <div class="col-md-7" ng-controller="commentsCtrl">
+        <div class="col-md-7">
             <h4>{{ problem.title }}</h4>
-            {% if is_can_edit %}
-                <a href="{% url 'site_edit_problem' problem.id %}" class="btn btn-primary btn-sm">{% trans "Edit" %}</a>
-            {% endif %}
             <form enctype="multipart/form-data" action="{% url 'site_process_follow' %}" method="post" style="display: inline;">{% csrf_token %}
                 <input id="id" name="id" type="hidden" value="{{ problem.id }}">
                 {% if is_followed %}
@@ -26,6 +25,23 @@
                     <input type="submit" value="{% trans 'Follow' %}" class="btn btn-primary btn-sm" style="display: inline;">
                 {% endif %}
             </form>
+            {% if is_can_edit %}
+                <a href="{% url 'site_edit_problem' problem.id %}" class="btn btn-primary btn-sm">{% trans "Edit" %}</a>
+            {% endif %}
+            <div style="margin-top: 10px;margin-bottom: 30px;" ng-controller="problemViewCtrl" ng-init="statusChangeURL='{% url 'site_process_problem_status_change' problem.id %}'; init('
+            {% if user.is_staff %}
+                {{ problem.get_admin_statuses }}
+            {% else %}
+                {{ problem.get_statuses }}
+            {% endif %}
+            ', '{{ problem.status }}');">
+                {% trans "Status" %}:
+                {% if problem.status == "rejected" and not user.is_staff or not is_can_edit %}
+                    {{ problem.get_status }}
+                {% else %}
+                    <select class="form-control" ng-model="status;" ng-options="i[0] as i[1] for i in statuses"></select>
+                {% endif %}
+            </div>
             <p>{{ problem.location_details }}</p>
             <p>{% trans "Reported by" %} <a href="{% url 'accounts_profile_view' problem.author.username %}">{{ problem.author.username }}</a> {% trans "on" %} {{ problem.created_when }}</p>
             <p>{{ problem.description }}</p>
@@ -38,14 +54,18 @@
         <div class="col-md-5">
             {% if problem.latitude and problem.longitude %}
                 <h4>{% trans "Location" %}</h4>
-                <div style="margin-bottom: 15px;" ng-controller="problemViewCtrl" ng-init="zoom='{{ zoom }}';latitude='{{ problem.latitude }}'; longitude='{{ problem.longitude }}'; map_init();">
+                <div style="margin-bottom: 15px;" ng-controller="problemViewMapCtrl" ng-init="zoom='{{ zoom }}';latitude='{{ problem.latitude }}'; longitude='{{ problem.longitude }}'; map_init();">
                     <div id="map_canvas" style="width:100%; height:350px;"></div>
                 </div>
             {% endif %}
-            <h4>{% trans "Images" %}</h4>
-            {% for i in problem.get_images %}
-                <p><img width="100%" src="{{ i.thumbnail }}"></p>
-            {% endfor %}
+            {% with images=problem.get_images %}
+                {% if images %}
+                    <h4>{% trans "Images" %}</h4>
+                    {% for i in images %}
+                        <p><img width="100%" src="{{ i.thumbnail }}"></p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
     </div>
 {% endblock site_page %}
@@ -54,6 +74,11 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-cookies.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.min.js"></script>
+    {% if LANGUAGE_CODE == "uk" %}
+        <script src="//code.angularjs.org/1.2.15/i18n/angular-locale_uk-ua.js"></script>
+    {% elif LANGUAGE_CODE == "ru" %}
+        <script src="//code.angularjs.org/1.2.15/i18n/angular-locale_ru-ru.js"></script>
+    {% endif %}
     <script>
         var app = angular.module("myApp", ["ui.bootstrap", "ngCookies", "ngSanitize"]);
         app.run(['$http','$cookies',function($http, $cookies)

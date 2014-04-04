@@ -8,4 +8,5 @@
     <input type="submit" value="{% trans 'Login' %}" class="btn btn-primary btn-sm">
     <a href="{% url 'accounts_register' %}">{% trans "Register" %}</a>
     <a href="{% url 'accounts_send_passwd_reset_link' %}">{% trans "Forgot password" %}</a>
+    <input type="hidden" name="next" value="{{ next }}">
 </form>

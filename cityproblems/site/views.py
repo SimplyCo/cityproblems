@@ -22,6 +22,8 @@ from .forms import *
 from cityproblems.admin.models import SiteParameters
 from cityproblems.comments.models import Comment
 
+from annoying.decorators import render_to, ajax_request
+
 User = get_user_model()
 
 
@@ -79,7 +81,7 @@ def edit_problem(request, id):
         problem = form.save()
         if problem.status == "creating":
             Comment.add_root(fk_item=problem, created_when=now(), created_by=None, content=None)
-            problem.status = "published"
+            problem.status = "open"
             problem.save()
         messages.success(request, _("Changes saved"))
         return HttpResponseRedirect(reverse("site_problem_view", args=(problem.id,)))
@@ -96,6 +98,7 @@ def edit_problem(request, id):
     return {"form": form, "center": center, "problem": problem, "files": files}
 
 
+@login_required
 def process_follow(request):
     if request.method != 'POST':
         return HttpResponse("Use post")
@@ -108,3 +111,28 @@ def process_follow(request):
         message = _("You sucessfully subscribe to this problem")
     messages.success(request, message)
     return HttpResponseRedirect(problem.get_absolute_url())
+
+
+@ajax_request
+def process_problem_status_change(request, obj_id):
+    if not request.user.is_authenticated():
+        return {"Error": _("Login please")}
+    try:
+        body = json.loads(request.body)
+    except ValueError:
+        return {'Error': "Error: can`t parse message"}
+    problem = get_object_or_404(Problem, id=obj_id)
+    if not problem.is_can_edit(request.user):
+        return {'Error': _("Error: Permission denied.")}
+    if request.user.is_staff:
+        tmpStatuses = problem.get_admin_statuses(in_base64=False)
+    else:
+        tmpStatuses = problem.get_admin_statuses(in_base64=False)
+    statuses = list()
+    for i in tmpStatuses:
+        statuses.append(i[0])
+    if not body.get("status") in statuses:
+        return {'Error': _("Error: Wrong status.")}
+    problem.status = body.get("status")
+    problem.save()
+    return {"success": _("Status changed successfully")}
