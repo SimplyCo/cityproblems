@@ -5,7 +5,7 @@ import json
 import base64
 
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -55,7 +55,9 @@ def user_cabinet(request, username=None):
 
 @login_required
 @render_to('site/site_problem_view.html')
-def problem_view(request, id):
+def problem_view(request, id=None):
+    if id is None:
+        raise Http404
     problem = get_object_or_404(Problem, ~Q(status="creating"), id=id)
     try:
         zoom = SiteParameters.objects.only("value").get(key="zoom").value
@@ -129,3 +131,26 @@ def process_problem_status_change(request, obj_id):
     problem.status = body.get("status")
     problem.save()
     return {"success": _("Status changed successfully")}
+
+
+@ajax_request
+def get_main_page_markers(request):
+    if not request.user.is_authenticated():
+        return {"error": _("Login please")}
+    if request.method != 'POST':
+        return HttpResponse("Use POST")
+    try:
+        body = json.loads(request.body)
+    except ValueError:
+        return {'error': "Error: can`t parse message"}
+    problems = Problem.objects.filter(status="open", longitude__gt=0, latitude__gt=0)
+    if body.get("reportBy") == "me":
+        problems = problems.filter(author=request.user)
+    if not body.get("category") is None:
+        try:
+            category = ProblemCategory.objects.get(id=body.get("category"))
+            problems = problems.filter(category=category)
+        except ObjectDoesNotExist:
+            pass
+    problems = problems.values("latitude", "longitude", "title", "id")
+    return {"problems": list(problems)}

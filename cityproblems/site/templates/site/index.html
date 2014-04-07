@@ -10,7 +10,10 @@
 
 {% block site_page %}
 
-<div id="index-block" ng-app="myApp" ng-controller="mainPageViewCtrl" ng-init="latitude='{{ center.latitude }}'; longitude='{{ center.longitude }}'; zoom='{{ center.zoom }}'; map_init();">
+<div id="index-block" ng-app="myApp" ng-controller="mainPageViewCtrl" ng-init="problemViewURL='{% url 'site_problem_view' %}'; loadDataURL='{% url 'site_get_main_page_markers' %}'; latitude='{{ center.latitude }}'; longitude='{{ center.longitude }}'; zoom='{{ center.zoom }}'; map_init();">
+    {% verbatim %}
+        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+    {% endverbatim %}
 
     <!-- Side Menu -->
     <a ng-click="showMenu=!showMenu;" ng-class="{inactive: showMenu}" id="menu-toggle" href="#" class="btn btn-primary btn-xs toggle"><i class="fa fa-caret-square-o-left"></i></a>
@@ -20,11 +23,11 @@
             <li class="sidebar-brand">
                 {% trans 'Menu' %}
             </li>
-            <li>
-                <a href="">{% trans 'All Problems' %}</a>
+            <li ng-class="{active: reportBy=='all'}">
+                <a href="" ng-click="reportBy='all';">{% trans 'All Problems' %}</a>
             </li>
-            <li>
-                <a href="">{% trans 'Reported by me' %}</a>
+            <li ng-class="{active: reportBy=='me'}">
+                <a href="" ng-click="reportBy='me';">{% trans 'Reported by me' %}</a>
             </li>
             <li>
                 <a href="{% url 'site_create_problem' %}">{% trans 'Report new problem' %}</a>
@@ -46,8 +49,14 @@
 
 {% block site_page_scripts %}
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="{% get_static_prefix %}libs/angular/ui-bootstrap-tpls-0.10.0.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-cookies.min.js"></script>
     <script>
-        var app = angular.module("myApp", []);        
+        var app = angular.module("myApp", ["ui.bootstrap", "ngCookies"]);
+        app.run(['$http','$cookies',function($http, $cookies)
+        {
+            $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
+        }]);
     </script>
     <script type="text/javascript" src="{% get_static_prefix %}site/js/index.js"></script>
 {% endblock site_page_scripts %}
