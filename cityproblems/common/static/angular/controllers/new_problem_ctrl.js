@@ -22,9 +22,19 @@ var NewProblemCtrl = function ($scope, $upload, $http, $timeout)
         $scope.longitude=document.getElementsByName("longitude")[0].value;
         var latitude = $scope.latitude==0 ? $scope.default_latitude : $scope.latitude;
         var longitude = $scope.longitude==0 ? $scope.default_longitude : $scope.longitude;
-        var latLng = new google.maps.LatLng(parseFloat(latitude.replace(",", ".")), parseFloat(longitude.replace(",", ".")));
+        var zoom = parseInt($scope.zoom);
+        if(zoom!=zoom)
+            $scope.zoom=11;
+        latitude = parseFloat(latitude.replace(",", "."));
+        longitude = parseFloat(longitude.replace(",", "."));
+        if(latitude!=latitude || longitude!=longitude)
+        {
+            alert("Wrong map config. Please fix it in site parameters");
+            return;
+        }
+        var latLng = new google.maps.LatLng(latitude, longitude);
         var mapOptions = {
-            zoom: parseInt($scope.zoom),
+            zoom: zoom,
             center: latLng,
             scrollwheel: false,
         }

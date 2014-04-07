@@ -10,13 +10,13 @@
 
 {% block site_page %}
 
-<div id="index-block">
+<div id="index-block" ng-app="myApp" ng-controller="mainPageViewCtrl" ng-init="latitude='{{ center.latitude }}'; longitude='{{ center.longitude }}'; zoom='{{ center.zoom }}'; map_init();">
 
     <!-- Side Menu -->
-    <a id="menu-toggle" href="#" class="btn btn-primary btn-xs toggle"><i class="fa fa-caret-square-o-left"></i></a>
-    <div id="sidebar-wrapper">
+    <a ng-click="showMenu=!showMenu;" ng-class="{inactive: showMenu}" id="menu-toggle" href="#" class="btn btn-primary btn-xs toggle"><i class="fa fa-caret-square-o-left"></i></a>
+    <div id="sidebar-wrapper" ng-class="showMenu ? 'active' : 'inactive'">
         <ul class="sidebar-nav">
-            <a id="menu-close" href="#" class="btn btn-default btn-xs pull-right toggle"><i class="fa fa-times"></i></a>
+            <a ng-click="showMenu=!showMenu;" id="menu-close" href="#" class="btn btn-default btn-xs pull-right toggle"><i class="fa fa-times"></i></a>
             <li class="sidebar-brand">
                 {% trans 'Menu' %}
             </li>
@@ -27,7 +27,7 @@
                 <a href="">{% trans 'Reported by me' %}</a>
             </li>
             <li>
-                <a href="">{% trans 'Report new problem' %}</a>
+                <a href="{% url 'site_create_problem' %}">{% trans 'Report new problem' %}</a>
             </li>
         </ul>
     </div>
@@ -45,5 +45,9 @@
 {% endblock site_page %}
 
 {% block site_page_scripts %}
-<script type="text/javascript" src="{% get_static_prefix %}site/js/index.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script>
+        var app = angular.module("myApp", []);        
+    </script>
+    <script type="text/javascript" src="{% get_static_prefix %}site/js/index.js"></script>
 {% endblock site_page_scripts %}

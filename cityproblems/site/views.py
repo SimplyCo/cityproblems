@@ -19,6 +19,7 @@ from django.utils.timezone import now
 
 from .models import *
 from .forms import *
+from .utils import *
 from cityproblems.admin.models import SiteParameters
 from cityproblems.comments.models import Comment
 
@@ -32,6 +33,7 @@ def home(request):
     form = AuthenticationForm()
     return {
         'form': form,
+        "center": get_map_center()
     }
 
 
@@ -85,17 +87,8 @@ def edit_problem(request, id):
             problem.save()
         messages.success(request, _("Changes saved"))
         return HttpResponseRedirect(reverse("site_problem_view", args=(problem.id,)))
-    center = dict()
-    try:
-        center["latitude"] = SiteParameters.objects.only("value").get(key="latitude").value
-        center["longitude"] = SiteParameters.objects.only("value").get(key="longitude").value
-        center["zoom"] = SiteParameters.objects.only("value").get(key="zoom").value
-    except ObjectDoesNotExist:
-        center["latitude"] = "50.444388"
-        center["longitude"] = "30.562592"
-        center["zoom"] = 11
     files = base64.standard_b64encode(json.dumps(problem.get_images()))
-    return {"form": form, "center": center, "problem": problem, "files": files}
+    return {"form": form, "center": get_map_center(), "problem": problem, "files": files}
 
 
 @login_required

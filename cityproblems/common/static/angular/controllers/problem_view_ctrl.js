@@ -11,11 +11,19 @@ var problemViewMapCtrl = function ($scope)
 
     $scope.map_init=function()
     {
-        if(!$scope.zoom)
-            $scope.zoom =11;
-        var latLng = new google.maps.LatLng(parseFloat($scope.latitude.replace(",", ".")), parseFloat($scope.longitude.replace(",", ".")));
+        var zoom = parseInt($scope.zoom);
+        if(zoom!=zoom)
+            $scope.zoom=11;
+        var latitude = parseFloat($scope.latitude.replace(",", "."));
+        var longitude = parseFloat($scope.longitude.replace(",", "."));
+        if(latitude!=latitude || longitude!=longitude)
+        {
+            alert("Wrong map config. Please fix it in site parameters");
+            return;
+        }
+        var latLng = new google.maps.LatLng(latitude, longitude);
         var mapOptions = {
-            zoom: parseInt($scope.zoom),
+            zoom: zoom,
             center: latLng,
             scrollwheel: false,
         }
