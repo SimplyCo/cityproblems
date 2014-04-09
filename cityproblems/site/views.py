@@ -16,6 +16,9 @@ from annoying.decorators import render_to
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils.timezone import now
+from django.views.generic.list import ListView
+from django.utils.decorators import method_decorator
+from django.conf import settings
 
 from .models import *
 from .forms import *
@@ -42,15 +45,52 @@ def no_permissions(request):
     return {}
 
 
-@login_required
-@render_to('site/site_user_cabinet.html')
-def user_cabinet(request, username=None):
-    if username is None:
-        user = request.user
-    else:
-        user = get_object_or_404(User, username=username)
-    problems = user.problem_set.only("id", "title").exclude(status="creating")
-    return {"problems": problems}
+class UserDashboard(ListView):
+    model = Problem
+    paginate_by = settings.PROBLEMS_OBJECTS_PER_PAGE
+    context_object_name = "problems"
+    template_name = "site/site_user_dashboard.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserDashboard, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        if self.kwargs.get("reportBy") == "me":
+            problems = self.request.user.problem_set.all()
+        else:
+            problems = Problem.objects.all()
+        self.statuses = Problem.get_admin_statuses(in_base64=False)
+        self.statuses.insert(0, ("all", _("All")))
+        statuses = list()
+        self.status = None
+        status = self.kwargs.get("status")
+        for i in self.statuses:
+            if i[0] == status:
+                self.status = i[1]
+            statuses.append(i[0])
+        if status not in statuses:
+            raise Http404
+        if not status == "all":
+            problems = problems.filter(status=status)
+        category_id = int(self.kwargs.get("category"))
+        if not category_id:
+            return problems.exclude(status="creating")
+        category = get_object_or_404(ProblemCategory, id=category_id)
+        problems = problems.filter(category=category)
+        self.category = category.title
+        return problems.exclude(status="creating")
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDashboard, self).get_context_data(**kwargs)
+        context["currentPage"] = self.kwargs.get("reportBy")
+        context["status"] = dict(title=self.status, status=self.kwargs.get("status"))
+        context["statuses"] = self.statuses
+        categories = list(ProblemCategory.objects.all().values("id", "title"))
+        categories.insert(0, dict(id=0, title=_("All")))
+        context["category"] = dict(title=self.category if int(self.kwargs.get("category")) else _("All"), category=self.kwargs.get("category"))
+        context["categories"] = categories
+        return context
 
 
 @login_required
@@ -122,7 +162,7 @@ def process_problem_status_change(request, obj_id):
     if request.user.is_staff:
         tmpStatuses = problem.get_admin_statuses(in_base64=False)
     else:
-        tmpStatuses = problem.get_admin_statuses(in_base64=False)
+        tmpStatuses = problem.get_statuses(in_base64=False)
     statuses = list()
     for i in tmpStatuses:
         statuses.append(i[0])

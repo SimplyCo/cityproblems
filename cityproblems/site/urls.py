@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 
+from .views import UserDashboard
+
 urlpatterns = patterns('cityproblems.site.views',
-                       url(r'^cabinet/$', 'user_cabinet', name='site_user_cabinet'),
-                       url(r'^cabinet/(\w+)/$', 'user_cabinet', name='site_user_cabinet'),
                        url(r'^$', 'home', name='home'),
                        url(r'^denied/$', 'no_permissions', name='no_permissions'),
                        url(r'^create_problem/$', 'create_problem', name='site_create_problem'),
@@ -15,3 +15,7 @@ urlpatterns = patterns('cityproblems.site.views',
                        url(r'^get_main_page_markers/$', 'get_main_page_markers', name='site_get_main_page_markers'),
                        )
 
+urlpatterns += patterns('',
+                        url(r'^dashboard/$', UserDashboard.as_view(), {"reportBy": "me", "status": "all", "category": 0}, name='site_user_dashboard'),
+                        url(r'^dashboard/(?P<reportBy>\w+)/(?P<status>\w+)/(?P<category>\d+)/$', UserDashboard.as_view(), name='site_user_dashboard'),
+                        )

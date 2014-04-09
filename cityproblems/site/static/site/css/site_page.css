@@ -1,0 +1,59 @@
+.dashboard-side-menu {
+    background-color: #505050;
+    color: #FFFFE0;
+    font-size: 14px;
+    position: fixed;
+    top: 45px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 10;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.side-menu {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+
+.side-menu .menu-section {margin: 10px 10px 20px 10px;}
+
+.side-menu .menu-section h4 {font-size: 13px; font-weight: bold; border-bottom: 1px solid #FFFFE0;}
+
+.side-menu .menu-section ul {padding: 0; margin: 0; list-style: none;}
+.side-menu .menu-section ul li {margin-top: 2px;}
+.side-menu .menu-section ul li a {
+    font-size: 13px;
+    display: block;
+    padding: 4px 6px;
+}
+.side-menu .menu-section ul li:hover a {
+    background-color: #59A80F;
+    color: white;
+    text-decoration: none;
+}
+.side-menu .menu-section ul li.active {}
+.side-menu .menu-section ul li.active a {
+    background-color: #40790B;
+    color: #FFFFE0;
+    text-decoration: none;
+}
+.side-menu .menu-section ul li.active:hover a {
+    text-decoration: none;
+}
+
+.side-menu a {}
+.side-menu a:hover {color: #FFFFE0;}
+
+
+
+
+/* REST dashboard PART */
+
+.dashboard-main-part {
+
+    padding-top: 55px;
+}

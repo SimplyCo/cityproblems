@@ -51,13 +51,15 @@ class Problem(models.Model):
     def get_absolute_url(self):
         return reverse("site_problem_view", args=(self.id,))
 
-    def get_statuses(self, in_base64=True):
+    @staticmethod
+    def get_statuses(in_base64=True):
         statuses = [i for i in PROBLEM_STATUS_CHOICES if not(i[0] == "creating" or i[0] == "rejected")]
         if in_base64:
             return base64.standard_b64encode(json.dumps(statuses).encode("utf-8"))
         return statuses
 
-    def get_admin_statuses(self, in_base64=True):
+    @staticmethod
+    def get_admin_statuses(in_base64=True):
         statuses = [i for i in PROBLEM_STATUS_CHOICES if i[0] != "creating"]
         if in_base64:
             return base64.standard_b64encode(json.dumps(statuses).encode("utf-8"))

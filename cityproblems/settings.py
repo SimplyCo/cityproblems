@@ -84,5 +84,6 @@ MEDIA_ROOT = u'{}'.format(BASE_DIR)
 MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = reverse_lazy("site_user_cabinet")
 ADMIN_USER_OBJECTS_PER_PAGE = 20
+PROBLEMS_OBJECTS_PER_PAGE = 20
 # celery
 BROKER_URL = 'redis://localhost:6379/0'
