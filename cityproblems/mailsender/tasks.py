@@ -7,10 +7,18 @@ from .mailsender import send_mail
 
 from celery import shared_task
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @shared_task
 def send_template_mail_sync(to, subject, context, template):
-    text = render_to_string(template, context)
+    try:
+        text = render_to_string(template, context)
+    except Exception as e:
+        logger.error(u'\n\nMessage to "{}" with subject "{}" was not sended\nTemplate: "{}" not found\n'.format(to, subject, template))
+        return
     send_mail(to, subject, text, None)
 
 

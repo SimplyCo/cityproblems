@@ -82,8 +82,70 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'static/'
 MEDIA_ROOT = u'{}'.format(BASE_DIR)
 MEDIA_URL = '/media/'
-LOGIN_REDIRECT_URL = reverse_lazy("site_user_cabinet")
+LOGIN_REDIRECT_URL = reverse_lazy("site_user_dashboard")
 ADMIN_USER_OBJECTS_PER_PAGE = 20
 PROBLEMS_OBJECTS_PER_PAGE = 20
 # celery
 BROKER_URL = 'redis://localhost:6379/0'
+# logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        },
+        'mailsender': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': u'{}/log/mail_debug.log'.format(BASE_DIR),
+        },
+        'mail': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': u'{}/log/mail_errors.log'.format(BASE_DIR),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['null'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'cityproblems.mailsender.mailsender': {
+            'handlers': ['mailsender'],
+            'level': 'DEBUG',
+        },
+        #'cityproblems.mailsender.mailsender': {
+            #'handlers': ['mail'],
+            #'level': 'ERROR',
+        #},
+        'cityproblems.mailsender.tasks': {
+            'handlers': ['mail'],
+            'level': 'ERROR',
+        }
+    }
+}

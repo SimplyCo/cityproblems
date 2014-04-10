@@ -60,7 +60,7 @@ def process_file_remove(request):
     if request.method != "POST":
         return HttpResponse("Use post")
     try:
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode("utf-8"))
     except ValueError:
         return {"Error": "Error"}
     try:
@@ -78,7 +78,7 @@ def process_image_move(request):
     if request.method != 'POST':
         return HttpResponse("Use post")
     try:
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode("utf-8"))
     except ValueError:
         return {'Error': "Error: can`t parse message"}
     id = body.get('id', 0)

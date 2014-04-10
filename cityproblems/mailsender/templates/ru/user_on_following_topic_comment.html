@@ -1,0 +1,12 @@
+Новый комментарий.<br/>
+<br/>
+Уважаемый {{ usr.first_name }} {{ usr.last_name }}!<br/>
+Под темой "{{ comment.forum_item.subject }}" был оставлен новый комментарий:<br/>
+<br/>
+{{ comment.created_by.username }}:<br/>
+{{ comment.content }}<br/>
+Просмотреть все комментарии вы можете по ссылке:<br/>
+<a href="{{ fk_item_url }}">Тема {{ comment.forum_item.subject }}</a><br/>
+<br/>
+Спасибо!<br/>
+<br/>

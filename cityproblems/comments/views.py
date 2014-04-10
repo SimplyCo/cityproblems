@@ -64,7 +64,7 @@ def saveCommentJSON(request, fk_item_id):
     if not request.user.is_authenticated():
         return {"Error": _("Login please")}
     try:
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode("utf-8"))
     except ValueError:
         return {'Error': "Error: can`t parse message"}
     if not ('parentID' in body and "text" in body and body['text']):
@@ -96,7 +96,7 @@ def saveCommentChangesJSON(request):
     if not request.user.is_authenticated():
         return {"Error": _("Login please")}
     try:
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode("utf-8"))
     except ValueError:
         return {'Error': "Error: can`t parse message"}
     if len(body['text']) > 10000:
@@ -117,7 +117,7 @@ def saveCommentChangesJSON(request):
 @ajax_request
 def rmCommentJSON(request):
     try:
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode("utf-8"))
     except ValueError:
         return {'Error': "Error: can`t parse message"}
     try:

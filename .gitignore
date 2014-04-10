@@ -23,3 +23,5 @@ nosetests.xml
 *.sqlite3
 cityproblems/settings_mail.py
 /images/
+/log/
+__pycache__

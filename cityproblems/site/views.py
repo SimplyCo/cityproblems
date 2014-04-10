@@ -153,7 +153,7 @@ def process_problem_status_change(request, obj_id):
     if not request.user.is_authenticated():
         return {"Error": _("Login please")}
     try:
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode("utf-8"))
     except ValueError:
         return {'Error': "Error: can`t parse message"}
     problem = get_object_or_404(Problem, id=obj_id)
@@ -180,7 +180,7 @@ def get_main_page_markers(request):
     if request.method != 'POST':
         return HttpResponse("Use POST")
     try:
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode("utf-8"))
     except ValueError:
         return {'error': "Error: can`t parse message"}
     problems = Problem.objects.filter(status="open", longitude__gt=0, latitude__gt=0)
