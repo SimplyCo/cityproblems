@@ -6,24 +6,14 @@ E2FF9E
 F0F2DD
 */
 
+
+
+/* General classes */
+
 #content {
     margin-top: 45px;
     padding-bottom: 35px;
 }
-
-/*
-div#index-left {
-    left: 0;
-    bottom: 0;
-    top: 0;
-    overflow: hidden;
-    position: absolute;
-    width: 300px;
-    background-color: #FEFEFE;
-    border-right: 1px solid #E0E0E0;
-}
-*/
-
 div#content {
     right: 0;
     bottom: 0;
@@ -32,21 +22,21 @@ div#content {
     overflow: hidden;
     position: absolute;
 }
-
 .paddedContent {
     height: 100%;
 }
-
 .index-login-form {
     width: 400px;
     padding: 10px 20px 20px 20px;
 }
 
+/* enf of General classes */
 
 
 
 
-/* SIDEBAR */
+
+/* SIDEBAR classes */
 
 #sidebar-wrapper {
   margin-right: -250px;
@@ -74,26 +64,27 @@ div#content {
   padding: 0;
 }
 
-.sidebar-nav li {
+.sidebar-nav > li {
   line-height: 40px;
   text-indent: 20px;
 }
 
-.sidebar-nav li a {
+.sidebar-nav > li > a {
   color: #999999;
   display: block;
   text-decoration: none;
   font-size: 13px;
 }
 
-.sidebar-nav li a:hover {
+.sidebar-nav > li > a:hover {
   color: #fff;
   background: rgba(255,255,255,0.2);
   text-decoration: none;
 }
 
-.sidebar-nav li a:active,
-.sidebar-nav li a:focus {
+.sidebar-nav > li > a:active,
+.sidebar-nav > li > a:focus {
+    color: #fff;
   text-decoration: none;
 }
 
@@ -104,16 +95,6 @@ div#content {
   color: #59A80F;
   margin-bottom: 20px;
 }
-
-/*
-.sidebar-nav > .sidebar-brand a {
-  color: #999999;
-}
-.sidebar-nav > .sidebar-brand a:hover {
-  color: #fff;
-  background: none;
-}
-*/
 
 #menu-toggle {
   top: 45px;
@@ -146,3 +127,28 @@ div#content {
   font-size: 24px;
   padding: 4px 12px;
 }
+
+.sidebar-nav > li > .categories-filter {
+  color: #999999;
+  display: block;
+  font-size: 13px;
+}
+.sidebar-nav > li > .categories-filter > .current-category {
+  text-decoration: none;
+}
+.sidebar-nav > li > .categories-filter > .current-category > a.category {
+}
+.sidebar-nav > li > .categories-filter > .current-category > a.category:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.sidebar-nav > li > .categories-filter > .current-category > a.category > .glyphicon {
+    text-align: left;
+    width: 12px;
+    text-indent: 0;
+    margin-left: 5px;
+}
+
+/* end of SIDEBAR classes */
+
+

@@ -1,0 +1,19 @@
+{% load static %}
+{% load bootstrap %}
+{% load i18n %}
+<div id="popup-filter-category" class="panel panel-default popup">
+    <div class="panel-body">
+        <div class="index-form">
+            <h3>{% trans "Filter by category" %}</h3>
+            <form method="post" enctype="multipart/form-data" class="form-horizontal"
+                  action="">{% csrf_token %}
+                {{ form|bootstrap }}
+                <input type="submit" value="{% trans 'Filter' %}" class="btn btn-primary btn-sm">
+                <input type="button" value="{% trans 'Cancel' %}" class="btn btn-default btn-sm close-popup"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+

@@ -11,6 +11,7 @@
 {% block site_page %}
 
 <div id="index-block" ng-app="myApp" ng-controller="mainPageViewCtrl" ng-init="problemViewURL='{% url 'site_problem_view' %}'; loadDataURL='{% url 'site_get_main_page_markers' %}'; latitude='{{ center.latitude }}'; longitude='{{ center.longitude }}'; zoom='{{ center.zoom }}'; map_init();">
+
     {% verbatim %}
         <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
     {% endverbatim %}
@@ -30,6 +31,16 @@
                 <a href="" ng-click="reportBy='me';">{% trans 'Reported by me' %}</a>
             </li>
             <li>
+                <span class="categories-filter">
+                    <span class="current-category">
+                        {% trans 'Categories' %}:
+                        <a href="" id="filter-category-button" class="category" title="{% trans 'Filter by category' %}">
+                            {% trans 'All' %}<span class="glyphicon glyphicon-cog"></span>
+                        </a>
+                    </span>
+                </span>
+            </li>
+            <li>
                 <a href="{% url 'site_create_problem' %}">{% trans 'Report new problem' %}</a>
             </li>
         </ul>
@@ -43,6 +54,8 @@
     </div>
 
 </div>
+
+{% include 'site/popups/filter_category_popup.html' %}
 
 
 {% endblock site_page %}
@@ -59,4 +72,5 @@
         }]);
     </script>
     <script type="text/javascript" src="{% get_static_prefix %}site/js/index.js"></script>
+    <script type="text/javascript" src="{% get_static_prefix %}site/js/index-popups.js"></script>
 {% endblock site_page_scripts %}
