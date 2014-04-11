@@ -33,11 +33,7 @@ User = get_user_model()
 
 @render_to('site/index.html')
 def home(request):
-    form = AuthenticationForm()
-    return {
-        'form': form,
-        "center": get_map_center()
-    }
+    return {"center": get_map_center()}
 
 
 @render_to('site/no_permissions.html')
@@ -175,8 +171,6 @@ def process_problem_status_change(request, obj_id):
 
 @ajax_request
 def get_main_page_markers(request):
-    if not request.user.is_authenticated():
-        return {"error": _("Login please")}
     if request.method != 'POST':
         return HttpResponse("Use POST")
     try:

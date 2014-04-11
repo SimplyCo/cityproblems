@@ -45,7 +45,10 @@
 </div>
 
 
-{% include 'site/popups/login_popup.html' %}
+{% if not user.is_authenticated %}
+    {% include 'site/popups/login_popup.html' %}
+    {% include 'site/popups/register_popup.html' %}
+{% endif %}
 
 {% endblock body %}
 

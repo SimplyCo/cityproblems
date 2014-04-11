@@ -1,10 +1,13 @@
-{% load static %}
 {% load bootstrap %}
 {% load i18n %}
 
 <h3>{% trans "Login" %}</h3>
 <form method="post" enctype="multipart/form-data" class="form-horizontal" action="{% url 'login' %}?next={{ request.get_full_path }}">{% csrf_token %}
-    {{ form|bootstrap }}
+    {% if form %}
+        {{ form|bootstrap }}
+    {% else %}
+        {{ login_form|bootstrap }}
+    {% endif %}
     <input type="submit" value="{% trans 'Login' %}" class="btn btn-primary btn-sm">
     <a href="{% url 'accounts_register' %}">{% trans "Register" %}</a>
     <a href="{% url 'accounts_send_passwd_reset_link' %}">{% trans "Forgot password" %}</a>

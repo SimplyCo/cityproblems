@@ -1,0 +1,15 @@
+{% load bootstrap %}
+{% load i18n %}
+
+<div id="popup-register" class="panel panel-default popup">
+    <div class="panel-body">
+        <div class="index-login-form">
+            <h3>{% trans "Register" %}</h3>
+            <form method="post" enctype="multipart/form-data" class="form-horizontal" action="{% url 'accounts_register' %}?next={{ request.get_full_path }}">{% csrf_token %}
+                {{ register_form|bootstrap }}
+                <input type="submit" value="{% trans 'Register' %}" class="btn btn-primary btn-sm">
+                <input type="button" value="{% trans 'Cancel' %}" class="btn btn-default btn-sm close-popup">
+            </form>
+        </div>
+    </div>
+</div>
