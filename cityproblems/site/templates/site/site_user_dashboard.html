@@ -55,7 +55,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     {% for i in categories %}
-                        <li><a href="{% url 'site_user_dashboard' currentPage status.status i.id %}">{{ i.title }}</a></li>
+                        <li><a href="{% url 'site_user_dashboard' currentPage status.status i.url_name %}">{{ i.title }}</a></li>
                     {% endfor %}
                 </ul>
             </div>

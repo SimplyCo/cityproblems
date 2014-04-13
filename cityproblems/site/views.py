@@ -28,12 +28,16 @@ from cityproblems.comments.models import Comment
 
 from annoying.decorators import render_to, ajax_request
 
+import json
+
 User = get_user_model()
 
 
 @render_to('site/index.html')
 def home(request):
-    return {"center": get_map_center()}
+    categories = list(ProblemCategory.objects.all().values("url_name", "title"))
+    categories.insert(0, dict(url_name="all", title=_("All")))
+    return {"center": get_map_center(), "categories": json.dumps(categories)}
 
 
 @render_to('site/no_permissions.html')
@@ -69,10 +73,10 @@ class UserDashboard(ListView):
             raise Http404
         if not status == "all":
             problems = problems.filter(status=status)
-        category_id = int(self.kwargs.get("category"))
-        if not category_id:
+        category_url_name = self.kwargs.get("category")
+        if category_url_name == "all":
             return problems.exclude(status="creating")
-        category = get_object_or_404(ProblemCategory, id=category_id)
+        category = get_object_or_404(ProblemCategory, url_name=category_url_name)
         problems = problems.filter(category=category)
         self.category = category.title
         return problems.exclude(status="creating")
@@ -82,9 +86,9 @@ class UserDashboard(ListView):
         context["currentPage"] = self.kwargs.get("reportBy")
         context["status"] = dict(title=self.status, status=self.kwargs.get("status"))
         context["statuses"] = self.statuses
-        categories = list(ProblemCategory.objects.all().values("id", "title"))
-        categories.insert(0, dict(id=0, title=_("All")))
-        context["category"] = dict(title=self.category if int(self.kwargs.get("category")) else _("All"), category=self.kwargs.get("category"))
+        categories = list(ProblemCategory.objects.all().values("url_name", "title"))
+        categories.insert(0, dict(url_name="all", title=_("All")))
+        context["category"] = dict(title=self.category if self.kwargs.get("category") != "all" else _("All"), category=self.kwargs.get("category"))
         context["categories"] = categories
         return context
 
@@ -182,7 +186,7 @@ def get_main_page_markers(request):
         problems = problems.filter(author=request.user)
     if not body.get("category") is None:
         try:
-            category = ProblemCategory.objects.get(id=body.get("category"))
+            category = ProblemCategory.objects.get(url_name=body.get("category"))
             problems = problems.filter(category=category)
         except ObjectDoesNotExist:
             pass

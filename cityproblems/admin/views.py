@@ -211,6 +211,7 @@ class ProblemCategoriesList(AdminPermissionMixin, ListView):
 class ProblemCategoryCreate(AdminPermissionMixin, CreateView):
     model = ProblemCategory
     template_name = "admin_form.html"
+    fields = ["title", "description"]
     success_url = reverse_lazy('admin_ProblemCategoriesList')
 
     def get_context_data(self, **kwargs):
@@ -223,6 +224,7 @@ class ProblemCategoryCreate(AdminPermissionMixin, CreateView):
 class ProblemCategoryEdit(AdminPermissionMixin, UpdateView):
     model = ProblemCategory
     template_name = "admin_form.html"
+    fields = ["title", "description"]
     success_url = reverse_lazy('admin_ProblemCategoriesList')
 
     def get_context_data(self, **kwargs):

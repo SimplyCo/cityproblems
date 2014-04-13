@@ -1,4 +1,5 @@
 from django.db import models
+from django.db import IntegrityError
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.core.urlresolvers import reverse
@@ -6,6 +7,8 @@ from django.core.urlresolvers import reverse
 import os
 import json
 import base64
+
+from .utils import get_safe_url_name
 
 User = get_user_model()
 
@@ -20,9 +23,26 @@ PROBLEM_STATUS_CHOICES = (
 class ProblemCategory(models.Model):
     title = models.CharField(max_length=150)
     description = models.TextField()
+    url_name = models.SlugField(max_length=170, unique=True, db_index=True)
+
+    class Meta:
+        ordering = ["title"]
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.url_name:
+            self.url_name = get_safe_url_name(self.url_name)
+        else:
+            self.url_name = get_safe_url_name(self.title)
+        while True:
+            try:
+                super(ProblemCategory, self).save(*args, **kwargs)
+            except IntegrityError:
+                self.url_name += "_"
+            else:
+                break
 
 
 class Problem(models.Model):

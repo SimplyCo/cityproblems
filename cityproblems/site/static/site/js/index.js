@@ -1,8 +1,36 @@
-var mainPageViewCtrl = function ($scope, $http)
+var mainPageViewCtrl = function ($scope, $http, $route)
 {
     "use strict";
     $scope.showMenu = false;
     $scope.alerts=[];
+    
+    $scope.$on('$routeChangeSuccess', function(next, current)
+    {
+        if((current.params.reportBy != $scope.reportBy || current.params.category != $scope.category) && (typeof current.params.reportBy != "undefined" && typeof current.params.category != "undefined"))
+        {
+            $scope.reportBy = current.params.reportBy;
+            $scope.category = current.params.category;
+            loadMarkers();
+        }
+    });
+    
+    $scope.init=function(categories)
+    {
+        $scope.categories = angular.fromJson(categories);
+        $scope.tmpCategory = "all";
+    }
+    
+    $scope.$watch("category", function(category, oldValue)
+    {
+        if(category != oldValue)
+            for(var i=0;i<$scope.categories.length;++i)
+                if($scope.categories[i]["url_name"] == category)
+                {
+                    $scope.categoryTitle = $scope.categories[i].title;
+                    break;
+                }                
+    }
+    )
     
     function clearMap()
     {
@@ -36,13 +64,11 @@ var mainPageViewCtrl = function ($scope, $http)
             mapTypeControl: false
         }
         $scope.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-        $scope.reportBy = "all";
     }
     
     function loadMarkers()
     {
-        var sendDict={reportBy: $scope.reportBy};
-        $http.post($scope.loadDataURL, sendDict)
+        $http.post($scope.loadDataURL, {reportBy: $scope.reportBy, category: $scope.category})
                 .success(function(data)
                 {
                     if ("error" in data)
@@ -77,15 +103,9 @@ var mainPageViewCtrl = function ($scope, $http)
                 });
     }
     
-    $scope.$watch("reportBy", function()
-    {
-        loadMarkers();
-    }
-    )
-    
     $scope.closeAlert = function(index)
     {
         $scope.alerts.splice(index, 1);
     };
 };
-mainPageViewCtrl.$inject = ["$scope", "$http"];
+mainPageViewCtrl.$inject = ["$scope", "$http", "$route"];
