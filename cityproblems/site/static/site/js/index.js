@@ -11,6 +11,7 @@ var mainPageViewCtrl = function ($scope, $http, $route)
             $scope.reportBy = current.params.reportBy;
             $scope.category = current.params.category;
             loadMarkers();
+            $('#popup-filter-category').trigger('close');
         }
     });
     
