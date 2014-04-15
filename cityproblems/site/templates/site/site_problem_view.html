@@ -44,7 +44,7 @@
             </div>
             <p>{{ problem.location_details }}</p>
             <p>{% trans "Reported by" %} <a href="{% url 'accounts_profile_view' problem.author.username %}">{{ problem.author.username }}</a> {% trans "on" %} {{ problem.created_when }}</p>
-            <p>{{ problem.description }}</p>
+            <p>{{ problem.description| linebreaks }}</p>
             <hr>
             <h4>{% trans "Comments" %}</h4>
             {% with fk_item=problem %}
