@@ -70,7 +70,7 @@ class RequestResetPasswdForm(forms.Form):
 
 class ChangePasswdForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        self.username = kwargs.pop("username", None)
+        self.user = kwargs.pop("user", None)
         super(ChangePasswdForm, self).__init__(*args, **kwargs)
         self.fields['passwd'] = forms.CharField(label=_("Old password"), widget=forms.PasswordInput(attrs={"required": ""}))
         self.fields['passwd1'] = forms.CharField(label=_("New password"), widget=forms.PasswordInput(attrs={"required": ""}))
@@ -89,13 +89,13 @@ class ChangePasswdForm(forms.Form):
 
     def clean_passwd(self):
         passwd = self.cleaned_data['passwd']
-        self.user = auth.authenticate(username=self.username, password=passwd)
-        if self.user is None:
+        self.user_cache = auth.authenticate(username=getattr(self.user, User.USERNAME_FIELD), password=passwd)
+        if self.user_cache is None:
             raise forms.ValidationError(_("Wrong password"))
         return passwd
 
     def save(self, commit=True):
-        self.user.set_password(self.cleaned_data['passwd1'])
+        self.user_cache.set_password(self.cleaned_data['passwd1'])
         if commit:
-            self.user.save()
-        return self.user
+            self.user_cache.save()
+        return self.user_cache

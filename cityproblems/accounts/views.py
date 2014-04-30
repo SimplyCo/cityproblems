@@ -91,7 +91,7 @@ def accounts_send_passwd_reset_link(request):
 @login_required
 @render_to('accounts_form.html')
 def accounts_passwd_change(request):
-    form = ChangePasswdForm(request.POST or None, username=request.user.username)
+    form = ChangePasswdForm(request.POST or None, user=request.user)
     if form.is_valid():
         form.save()
         messages.success(request, _("Password changed successful"))

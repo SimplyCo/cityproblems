@@ -1,5 +1,4 @@
-from django.db import models
-from django.db import IntegrityError
+from django.db import models, IntegrityError
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.core.urlresolvers import reverse
